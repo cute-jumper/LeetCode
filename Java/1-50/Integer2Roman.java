@@ -10,7 +10,7 @@ public class Integer2Roman {
                 int n = num / steps[index];
                 int substract = 0;
                 if (n == 0) {
-                    sb.append(letters[(index + 1) / 2 * 2 - 2]);
+                    sb.append(letters[(index - 1) / 2  * 2]);
                     sb.append(letters[index]);
                     substract = limits[index];
                 } else {
