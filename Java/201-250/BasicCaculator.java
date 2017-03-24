@@ -1,57 +1,47 @@
 public class BasicCaculator {
     public int calculate(String s) {
-        Deque<Integer> numQueue = new ArrayDeque<>();
-        Deque<Character> opQueue = new ArrayDeque<>();
+        Deque<String> queue = new ArrayDeque<>();
         int index = 0;
-        boolean compute = false;
         while (index < s.length()) {
             char c = s.charAt(index);
             if (c >= '0' && c <= '9') {
-                int num = c - '0';
+                StringBuilder sb = new StringBuilder();
+                sb.append(c);
                 index++;
                 while (index <= s.length()) {
                     if (index < s.length()) c = s.charAt(index);
                     if (index == s.length() || c < '0' || c > '9') {
-                        if (compute) {
-                            int first = numQueue.removeLast();
-                            char op = opQueue.removeLast();
-                            if (op == '*') {
-                                numQueue.addLast(first * num);
-                            } else {
-                                numQueue.addLast(first / num);
-                            }
-                            compute = false;
+                        String op = queue.peekLast();
+                        if (op != null && (op.equals("*") || op.equals("/"))) {
+                            queue.removeLast();
+                            int first = Integer.parseInt(queue.removeLast());
+                            int num =  Integer.parseInt(sb.toString());
+                            if (op.equals("*")) queue.addLast(first * num + "");
+                            else queue.addLast(first / num + "");
                         } else {
-                            numQueue.addLast(num);
+                            queue.addLast(sb.toString());
                         }
                         break;
                     }
-                    c = s.charAt(index);
-                    num *= 10;
-                    num += c - '0';
+                    sb.append(c);
                     index++;
                 }
             }
             if (index < s.length() && c != ' ') {
-                if (c == '*' || c == '/') {
-                    compute = true;
-                    opQueue.addLast(c);
-                } else {
-                    opQueue.addLast(c);
-                }
+                queue.addLast(c + "");
             }
             index++;
         }
-        while (!opQueue.isEmpty()) {
-            char op = opQueue.removeFirst();
-            int first = numQueue.removeFirst();
-            int second = numQueue.removeFirst();
+        int res = Integer.parseInt(queue.removeFirst());
+        while (!queue.isEmpty()) {
+            char op = queue.removeFirst().charAt(0);
+            int second = Integer.parseInt(queue.removeFirst());
             if (op == '+') {
-                numQueue.addFirst(first + second);
+                res += second;
             } else {
-                numQueue.addFirst(first - second);
+                res -= second;
             }
         }
-        return numQueue.getFirst();
+        return res;
     }
 }
