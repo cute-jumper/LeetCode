@@ -1,4 +1,4 @@
-public class BasicCaculator {
+public class BasicCaculator2 {
     public int calculate(String s) {
         Deque<String> queue = new ArrayDeque<>();
         int index = 0;
