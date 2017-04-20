@@ -4,7 +4,7 @@ public class SearchForARange {
         int low = 0;
         int high = nums.length - 1;
         while (low < high) {
-            int mid = (low + high) / 2;
+            int mid = low + (high - low) / 2;
             if (target <= nums[mid]) {
                 high = mid;
             } else {
@@ -13,10 +13,9 @@ public class SearchForARange {
         }
         if (nums[low] != target) return new int[] { -1, -1 };
         int lowerBound = low;
-        low = 0;
         high = nums.length - 1;
         while (low < high) {
-            int mid = (low + high - 1) / 2 + 1;
+            int mid = low + (high + 1 - low) / 2;
             if (target < nums[mid]) {
                 high = mid - 1;
             } else {
