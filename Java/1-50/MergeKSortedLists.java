@@ -7,42 +7,25 @@
  * }
  */
 public class MergeKSortedLists {
-    static class Pair {
-        ListNode node;
-        int index;
-        public Pair(ListNode node, int index) {
-            this.node = node;
-            this.index = index;
-        }
-    }
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists.length == 0) return null;
-        PriorityQueue<Pair> pq =
+        PriorityQueue<ListNode> pq =
             new PriorityQueue<>(lists.length,
-                                new Comparator<Pair>() {
+                                new Comparator<ListNode>() {
                                     @Override
-                                    public int compare(Pair a, Pair b) {
-                                        if (a.node.val < b.node.val) return -1;
-                                        if (a.node.val > b.node.val) return 1;
-                                        return 0;
+                                    public int compare(ListNode a, ListNode b) {
+                                        return a.val - b.val;
                                     }
                                 });
-        ListNode[] heads = new ListNode[lists.length];
-        for (int i = 0; i < heads.length; i++) {
-            heads[i] = lists[i];
-            if (heads[i] != null)
-                pq.add(new Pair(heads[i], i));
-        }
         ListNode vhead = new ListNode(0);
-        ListNode mergeHead = vhead;
+        ListNode p = vhead;
+        for (ListNode node : lists)
+            if (node != null) pq.add(node);
         while (!pq.isEmpty()) {
-            Pair p = pq.poll();
-            mergeHead.next = p.node;
-            mergeHead = p.node;
-            if (heads[p.index].next != null) {
-                heads[p.index] = heads[p.index].next;
-                pq.add(new Pair(heads[p.index], p.index));
-            }
+            ListNode node = pq.poll();
+            p.next = node;
+            p = p.next;
+            if (node.next != null) pq.add(node.next);
         }
         return vhead.next;
     }
