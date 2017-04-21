@@ -5,17 +5,16 @@ public class RestoreIPAddress {
         return res;
     }
     public void getIPAddresses(List<String> res, String s, int start, String prefix, int k) {
-        if (start == s.length()) return;
-        if (k == 1) {
-            if (s.length() - start > 3 || s.length() - start > 1 && s.charAt(start) == '0') return;
-            int sub = Integer.parseInt(s.substring(start));
-            if (sub < 256) res.add((prefix + "." + sub).substring(1));
+        if (k == 0 && start == s.length()) {
+            res.add(prefix);
+            return;
         }
-        for (int i = 0; i < 3 && start + i < s.length(); i++) {
-            int sub = Integer.parseInt(s.substring(start, start + i + 1));
+        if (s.length() - start > 3 * k) return;
+        for (int i = 1; i <= 3 && start + i <= s.length(); i++) {
+            int sub = Integer.parseInt(s.substring(start, start + i));
             if (sub < 256)
-                getIPAddresses(res, s, start + i + 1, prefix + "." + sub, k - 1);
-            if (s.charAt(start) == '0') break;
+                getIPAddresses(res, s, start + i, prefix + sub + (k == 1 ? "" : "."), k - 1);
+            if (sub == 0) return;
         }
     }
 }
