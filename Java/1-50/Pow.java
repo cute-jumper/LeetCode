@@ -1,16 +1,11 @@
 public class Pow {
     public double myPow(double x, int n) {
+        double curr = x;
         double res = 1;
-        double multiplier = x;
-        boolean negative = n < 0;
-        n = negative ? n : -n;
-        while (n < 0) {
-            if ((n & 1) == 1) {
-                res *= multiplier;
-            }
-            n /= 2;
-            multiplier *= multiplier;
+        for (int i = n; i != 0; i /= 2, curr *= curr) {
+            if ((i & 1) == 1)
+                res *= curr;
         }
-        return negative ? 1 / res : res;
+        return n >= 0 ? res : 1 / res;
     }
 }
