@@ -2,21 +2,11 @@ public class RemoveDuplicatesFromSortedArray2 {
     public int removeDuplicates(int[] nums) {
         if (nums.length == 0) return 0;
         int index = 0;
-        int counter = 0;
-        int prev = nums[0] - 1;
+        int count = 0;
         for (int i = 0; i < nums.length; i++) {
-            if (nums[i] == prev) {
-                counter++;
-                if (counter <= 2) {
-                    nums[index] = prev;
-                    index++;
-                }
-            } else {
-                prev = nums[i];
-                counter = 1;
-                nums[index] = prev;
-                index++;
-            }
+            if (i == 0 || nums[i] != nums[i-1]) count = 1;
+            else count++;
+            if (count < 3) nums[index++] = nums[i];
         }
         return index;
     }
