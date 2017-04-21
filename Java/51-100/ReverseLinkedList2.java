@@ -12,27 +12,20 @@ public class ReverseLinkedList2 {
         ListNode vhead = new ListNode(0);
         vhead.next = head;
         ListNode p = vhead;
-        while (m > 1) {
+        for (int i = 0; i < m - 1; i++) {
             p = p.next;
-            m--;
-            n--;
         }
-        n -= m;
-        ListNode low = p;
-        p = p.next;
-        ListNode high = p;
-        System.out.println(low.val);
-        System.out.println(high.val);
+        ListNode prevEnd = p;
         ListNode prev = null;
-        while (n >= 0) {
-            ListNode node = p;
-            p = p.next;
-            node.next = prev;
-            prev = node;
-            n--;
+        p = p.next;
+        for (int i = m; i <= n; i++) {
+            ListNode next = p.next;
+            p.next = prev;
+            prev = p;
+            p = next;
         }
-        low.next = prev;
-        high.next = p;
+        prevEnd.next.next = p;
+        prevEnd.next = prev;
         return vhead.next;
     }
 }
