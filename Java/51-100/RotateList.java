@@ -16,16 +16,14 @@ public class RotateList {
             len++;
             node = node.next;
         }
-        last = node;
         k %= len;
         if (k == 0) return head;
-        node = head;
-        for (int i = 0; i < len - k - 1; i++) {
+        node.next = head;
+        for (int i = 0; i < len - k; i++) {
             node = node.next;
         }
         ListNode newHead = node.next;
         node.next = null;
-        last.next = head;
         return newHead;
     }
 }
