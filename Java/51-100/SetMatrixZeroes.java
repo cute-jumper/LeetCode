@@ -3,27 +3,20 @@ public class SetMatrixZeroes {
         if (matrix.length == 0||
             matrix[0].length == 0)
             return;
-        boolean[] rowFlags = new boolean[matrix.length];
-        boolean[] columnFlags = new boolean[matrix[0].length];
-        for (int i = 0; i < rowFlags.length; i++) {
-            for (int j = 0; j < columnFlags.length; j++) {
-                if (matrix[i][j] == 0) {
-                    rowFlags[i] = true;
-                    columnFlags[j] = true;
-                }
+        boolean col0 = false;
+        for (int i = 0; i < matrix.length; i++) {
+            col0 = col0 || matrix[i][0] == 0;
+            for (int j = 1; j < matrix[i].length; j++) {
+                if (matrix[i][j] == 0)
+                    matrix[i][0] = matrix[0][j] = 0;
             }
         }
-        for (int i = 0; i < rowFlags.length; i++) {
-            if (rowFlags[i]) {
-                for (int j = 0; j < columnFlags.length; j++)
+        for (int i = matrix.length - 1; i >= 0; i--) {
+            for (int j = matrix[i].length - 1; j > 0; j--) {
+                if (matrix[i][0] == 0 || matrix[0][j] == 0)
                     matrix[i][j] = 0;
             }
-        }
-        for (int i = 0; i < columnFlags.length; i++) {
-            if (columnFlags[i]) {
-                for (int j = 0; j < rowFlags.length; j++)
-                    matrix[j][i] = 0;
-            }
+            if (col0) matrix[i][0] = 0;
         }
     }
 }
