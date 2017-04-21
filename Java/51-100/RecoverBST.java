@@ -8,30 +8,23 @@
  * }
  */
 public class RecoverBST {
+    TreeNode prev = null;
     public void recoverTree(TreeNode root) {
         TreeNode[] res = new TreeNode[2];
-        TreeNode[] prev = new TreeNode[1];
-        inOrder(res, root, prev);
+        inOrder(res, root);
         int tmp = res[0].val;
         res[0].val = res[1].val;
         res[1].val = tmp;
     }
-    public void inOrder(TreeNode[] res, TreeNode root, TreeNode[] prev) {
+    public void inOrder(TreeNode[] res, TreeNode root) {
         if (root == null) return;
-        inOrder(res, root.left, prev);
-        if (res[0] != null) {
-            if (prev[0].val > root.val) {
-                res[1] = root;
-            }
-            prev[0] = root;
-            inOrder(res, root.right, prev);
-        } else {
-            if (prev[0] != null && prev[0].val > root.val) {
-                res[0] = prev[0];
-                res[1] = root;
-            }
-            prev[0] = root;
-            inOrder(res, root.right, prev);
+        inOrder(res, root.left);
+        if (prev != null && prev.val > root.val) {
+            res[1] = root;
+            if (res[0] == null) res[0] = prev;
+            else return;
         }
+        prev = root;
+        inOrder(res, root.right);
     }
 }
