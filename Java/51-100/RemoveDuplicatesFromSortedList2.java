@@ -11,25 +11,19 @@ public class RemoveDuplicatesFromSortedList2 {
         if (head == null || head.next == null) return head;
         ListNode vhead = new ListNode(head.val - 1);
         vhead.next = head;
-        ListNode saved = vhead;
-        ListNode p = head.next;
-        int prev = head.val;
-        int counter = 1;
+        ListNode node = vhead;
+        ListNode p = head;
         while (p != null) {
-            if (p.val != prev) {
-                if (counter > 1) {
-                    saved.next = p;
-                    counter = 1;
-                } else {
-                    saved = saved.next;
-                }
-                prev = p.val;
+            if (p.next != null && p.next.val == p.val) {
+                while (p.next != null && p.next.val == p.val) p = p.next;
+                p = p.next;
             } else {
-                counter++;
+                node.next = p;
+                node = p;
+                p = p.next;
             }
-            p = p.next;
         }
-        if (counter > 1) saved.next = null;
+        node.next = null;
         return vhead.next;
     }
 }
