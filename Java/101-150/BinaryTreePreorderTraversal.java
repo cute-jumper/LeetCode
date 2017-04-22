@@ -12,20 +12,14 @@ public class BinaryTreePreorderTraversal {
         List<Integer> res = new ArrayList<>();
         Deque<TreeNode> stack = new ArrayDeque<>();
         TreeNode p = root;
-        while (p != null) {
-            res.add(p.val);
-            stack.addFirst(p);
-            p = p.left;
-        }
-        while (!stack.isEmpty()) {
-            TreeNode node = stack.pollFirst();
-            if (node.right != null) {
-                node = node.right;
-                while (node != null) {
-                    res.add(node.val);
-                    stack.addFirst(node);
-                    node = node.left;
-                }
+        while (p != null || !stack.isEmpty()) {
+            if (p != null) {
+                res.add(p.val);
+                stack.push(p);
+                p = p.left;
+            } else {
+                p = stack.pop();
+                p = p.right;
             }
         }
         return res;
