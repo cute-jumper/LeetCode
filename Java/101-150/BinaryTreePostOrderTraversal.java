@@ -12,23 +12,18 @@ public class BinaryTreePostOrderTraversal {
         List<Integer> res = new ArrayList<>();
         if (root == null) return res;
         Deque<TreeNode> stack = new ArrayDeque<>();
-        Set<TreeNode> popped = new HashSet<>();
-        TreeNode node = root;
-        while (node != null) {
-            stack.push(node);
-            node = node.left;
-        }
-        while (!stack.isEmpty()) {
-            node = stack.peek();
-            if (!popped.add(node)) {
-                res.add(node.val);
-                stack.pop();
-                continue;
-            }
-            node = node.right;
-            while (node != null) {
-                stack.push(node);
-                node = node.left;
+        TreeNode p = root;
+        while (p != null || !stack.isEmpty()) {
+            if (p != null) {
+                stack.push(p);
+                p = p.left;
+            } else {
+                while (!stack.isEmpty() && stack.peek().right == p) {
+                    p = stack.pop();
+                    res.add(p.val);
+                }
+                if (!stack.isEmpty()) p = stack.peek().right;
+                else break;
             }
         }
         return res;
