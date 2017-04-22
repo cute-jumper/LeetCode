@@ -8,8 +8,8 @@ public class MaximumGap {
         }
         if (maxVal == minVal) return 0;
         int gapSize = (maxVal - minVal) / (nums.length - 1) + 1;
-        int[][] segs = new int[nums.length + 1][2];
-        for (int i = 0; i < nums.length + 1; i++) {
+        int[][] segs = new int[nums.length][2];
+        for (int i = 0; i < segs.length; i++) {
             segs[i][0] = Integer.MAX_VALUE;
             segs[i][1] = Integer.MIN_VALUE;
         }
@@ -20,7 +20,7 @@ public class MaximumGap {
         }
         int maxGap = gapSize - 1;
         int prevMax = segs[0][1];
-        for (int i = 1; i < nums.length + 1; i++) {
+        for (int i = 1; i < segs.length; i++) {
             if (segs[i][0] != Integer.MAX_VALUE) {
                 maxGap = Math.max(maxGap, segs[i][0] - prevMax);
                 prevMax = segs[i][1];
