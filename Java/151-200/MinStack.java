@@ -1,7 +1,6 @@
 public class MinStack {
     Deque<Integer> stack = new ArrayDeque<>();
     Deque<Integer> minvalues = new ArrayDeque<>();
-    int currentMin = Integer.MAX_VALUE;
 
     /** initialize your data structure here. */
     public MinStack() {
@@ -9,26 +8,22 @@ public class MinStack {
     }
 
     public void push(int x) {
-        if (x <= currentMin) {
-            minvalues.addLast(currentMin);
-            currentMin = x;
+        if (minvalues.isEmpty() || minvalues.peek() >= x) {
+            minvalues.push(x);
         }
-        stack.addLast(x);
+        stack.push(x);
     }
 
     public void pop() {
-        int last = stack.removeLast();
-        if (last == currentMin) {
-            currentMin = minvalues.removeLast();
-        }
+        if (stack.pop() == minvalues.peek().intValue()) minvalues.pop();
     }
 
     public int top() {
-        return stack.getLast();
+        return stack.peek();
     }
 
     public int getMin() {
-        return currentMin;
+        return minvalues.peek();
     }
 }
 
