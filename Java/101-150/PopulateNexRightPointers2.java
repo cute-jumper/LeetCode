@@ -8,18 +8,27 @@
  */
 public class Solution {
     public void connect(TreeLinkNode root) {
-        List<TreeLinkNode> current = new ArrayList<>();
-        if (root != null) current.add(root);
-        while (current.size() > 0) {
-            TreeLinkNode prev = null;
-            List<TreeLinkNode> next = new ArrayList<>();
-            for (TreeLinkNode node : current) {
-                if (node.right != null) next.add(node.right);
-                if (node.left != null) next.add(node.left);
-                node.next = prev;
-                prev = node;
+        if (root == null) return;
+        root.next = null;
+        TreeLinkNode head = null;
+        TreeLinkNode prev = null;
+        while (root != null) {
+            while (root != null) {
+                if (root.left != null) {
+                    if (prev == null) head = root.left;
+                    else prev.next = root.left;
+                    prev = root.left;
+                }
+                if (root.right != null) {
+                    if (prev == null) head = root.right;
+                    else prev.next = root.right;
+                    prev = root.right;
+                }
+                root = root.next;
             }
-            current = next;
+            root = head;
+            head = null;
+            prev = null;
         }
     }
 }
