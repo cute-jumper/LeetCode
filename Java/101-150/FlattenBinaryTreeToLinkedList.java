@@ -9,14 +9,10 @@
  */
 public class FlattenBinaryTreeToLinkedList {
     public void flatten(TreeNode root) {
-        if (root == null) return;
-        if (root.right != null) flatten(root.right);
-        if (root.left != null) {
-            flatten(root.left);
+        for (; root != null; root = root.right) {
+            if (root.left == null) continue;
             TreeNode node = root.left;
-            while (node.right != null) {
-                node = node.right;
-            }
+            while (node.right != null) node = node.right;
             node.right = root.right;
             root.right = root.left;
             root.left = null;
