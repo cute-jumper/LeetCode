@@ -9,18 +9,13 @@
  */
 public class BinaryTreeMaximumPathSum {
     public int maxPathSum(TreeNode root) {
-        int[] res = new int[1];
-        res[0] = Integer.MIN_VALUE;
-        getChildSums(res, root);
-        return res[0];
+        return maxSum(root)[0];
     }
-    public int[] getChildSums(int[] res, TreeNode root) {
-        if (root == null) return new int[] {0, 0};
-        int[] left = getChildSums(res, root.left);
-        int leftMax = Math.max(Math.max(left[0], left[1]), 0);
-        int[] right = getChildSums(res, root.right);
-        int rightMax = Math.max(Math.max(right[0], right[1]), 0);
-        res[0] = Math.max(res[0], leftMax + root.val + rightMax);
-        return new int[] { root.val + leftMax, root.val + rightMax };
+    public int[] maxSum(TreeNode root) {
+        if (root == null) return new int[] {Integer.MIN_VALUE, 0};
+        int[] left = maxSum(root.left);
+        int[] right = maxSum(root.right);
+        return new int[] {Math.max(Math.max(left[0], right[0]), Math.max(left[1], 0) + Math.max(right[1], 0) + root.val),
+                          Math.max(Math.max(left[1], right[1]), 0) + root.val};
     }
 }
