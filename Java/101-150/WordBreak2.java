@@ -1,5 +1,4 @@
 public class WordBreak2 {
-    Set<Integer> failSet = new HashSet<>();
     public List<String> wordBreak(String s, List<String> wordDict) {
         List<String> res = new ArrayList<>();
         Set<String> wd = new HashSet<>(wordDict);
@@ -10,10 +9,10 @@ public class WordBreak2 {
         }
         for (int i = 0; i < count.length; i++)
             if (count[i] > 0) return res;
-        dfs(res, new ArrayList<String>(), s, 0, wd);
+        dfs(new int[s.length()], res, new ArrayList<String>(), s, 0, wd);
         return res;
     }
-    public void dfs(List<String> res, List<String> prefix, String s, int start, Set<String> wordDict) {
+    public boolean dfs(int[] memo, List<String> res, List<String> prefix, String s, int start, Set<String> wordDict) {
         if (start == s.length()) {
             StringBuilder sb = new StringBuilder();
             for (String i : prefix) {
@@ -22,21 +21,20 @@ public class WordBreak2 {
             }
             sb.deleteCharAt(sb.length() - 1);
             res.add(sb.toString());
-            return;
+            return true;
         }
-        if (failSet.contains(start)) return;
+        if (memo[start] != 0) return false;
         StringBuilder sb = new StringBuilder();
-        boolean failed = true;
+        boolean success = false;
         for (int i = start; i < s.length(); i++) {
             sb.append(s.charAt(i));
             if (wordDict.contains(sb.toString())) {
-                int oldSize = res.size();
                 prefix.add(sb.toString());
-                dfs(res, prefix, s, i + 1, wordDict);
-                if (res.size() > oldSize) failed = false;
+                success = dfs(memo, res, prefix, s, i + 1, wordDict) || success;
                 prefix.remove(prefix.size() - 1);
             }
         }
-        if (failed) failSet.add(start);
+        if (!success) memo[start] = 1;
+        return success;
     }
 }
