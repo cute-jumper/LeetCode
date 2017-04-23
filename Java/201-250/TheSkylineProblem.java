@@ -7,23 +7,13 @@ public class TheSkylineProblem {
             this.x = x;
             this.y = y;
         }
-        public boolean isEnd() {
-            return prev != null;
-        }
         @Override
         public int compareTo(Point that) {
-            if (x < that.x) return -1;
-            if (x > that.x) return 1;
-            if (prev != null && that.prev != null) {
-                if (y < that.y) return -1;
-                if (y > that.y) return 1;
-                return 0;
-            }
+            if (x != that.x) return x - that.x;
+            if (prev != null && that.prev != null) return y - that.y;
             if (prev != null) return 1;
             if (that.prev != null) return -1;
-            if (y > that.y) return -1;
-            if (y < that.y) return 1;
-            return 0;
+            return that.y - y;
         }
     }
     public List<int[]> getSkyline(int[][] buildings) {
@@ -32,23 +22,19 @@ public class TheSkylineProblem {
         Point[] ps = new Point[buildings.length * 2];
         int index = 0;
         for (int[] b : buildings) {
-            ps[index] = new Point(b[0], b[2]);
-            index++;
-            ps[index] = new Point(b[1], b[2]);
-            ps[index].prev = ps[index - 1];
-            index++;
+            ps[index + 1] = new Point(b[1], b[2]);
+            ps[index + 1].prev = ps[index] = new Point(b[0], b[2]);
+            index += 2;
         }
         Arrays.sort(ps);
         PriorityQueue<Point> pq = new PriorityQueue<>(ps.length, new Comparator<Point>() {
-            @Override
-            public int compare(Point a, Point b) {
-                if (a.y < b.y) return 1;
-                if (a.y > b.y) return -1;
-                return 0;
-            }
-        });
+                @Override
+                public int compare(Point a, Point b) {
+                    return b.y - a.y;
+                }
+            });
         for (Point p : ps) {
-            if (p.isEnd()) {
+            if (p.prev != null) {
                 pq.remove(p.prev);
                 if (pq.isEmpty()) {
                     res.add(new int[] { p.x, 0 });
