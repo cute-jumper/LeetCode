@@ -14,17 +14,13 @@ public class Codec {
         Deque<TreeNode> stack = new ArrayDeque<>();
         StringBuilder sb = new StringBuilder();
         TreeNode node = root;
-        while (node != null) {
-            stack.push(node);
-            sb.append(node.val + ",");
-            node = node.left;
-        }
-        while (!stack.isEmpty()) {
-            node = stack.pop().right;
-            while (node != null) {
+        while (node != null || !stack.isEmpty()) {
+            if (node != null) {
                 stack.push(node);
                 sb.append(node.val + ",");
                 node = node.left;
+            } else {
+                node = stack.pop().right;
             }
         }
         if (sb.length() > 0) sb.deleteCharAt(sb.length() - 1);
