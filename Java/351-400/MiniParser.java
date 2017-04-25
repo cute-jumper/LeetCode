@@ -34,7 +34,7 @@ public class Solution {
         while (index < s.length()) {
             char c = s.charAt(index);
             if (c == '[') {
-                if (current != null) stack.offerFirst(current);
+                if (current != null) stack.push(current);
                 current = new NestedInteger();
             } else if (c == '-' || c >= '0' && c <= '9') {
                 int num = 0;
@@ -50,14 +50,14 @@ public class Solution {
                         num = negative ? -num : num;
                         if (current == null) current = new NestedInteger(num);
                         else current.add(new NestedInteger(num));
-                        if (c == ']') index--;
                         break;
                     }
                     index++;
                 }
-            } else if (c == ']' && index < s.length() - 1) {
-                stack.peekFirst().add(current);
-                current = stack.pollFirst();
+            }
+            if (c == ']' && index < s.length() - 1) {
+                stack.peek().add(current);
+                current = stack.pop();
             }
             index++;
         }
