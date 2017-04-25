@@ -9,17 +9,22 @@
  */
 public class PathSum3 {
     public int pathSum(TreeNode root, int sum) {
-        return getPathCount(root, sum, sum, false);
+        Map<Integer, Integer> prefixSums = new HashMap<>();
+        prefixSums.put(0, 1);
+        return dfs(root, prefixSums, 0, sum);
     }
-    public int getPathCount(TreeNode root, int sum, int original, boolean mustPick) {
+    public int dfs(TreeNode root, Map<Integer, Integer> prefixSums, int sum, int target) {
         if (root == null) return 0;
-        int res = getPathCount(root.left, sum - root.val, original, true) +
-            getPathCount(root.right, sum - root.val, original, true) +
-            (root.val == sum ? 1 : 0);
-        if (!mustPick) {
-            res += getPathCount(root.left, original, original, false) +
-                getPathCount(root.right, original, original, false);
+        sum += root.val;
+        int res = 0;
+        if (prefixSums.containsKey(sum - target)) {
+            res += prefixSums.get(sum - target);
         }
+        if (prefixSums.containsKey(sum)) prefixSums.put(sum, prefixSums.get(sum) + 1);
+        else prefixSums.put(sum, 1);
+        res += dfs(root.left, prefixSums, sum, target);
+        res += dfs(root.right, prefixSums, sum, target);
+        prefixSums.put(sum, prefixSums.get(sum) - 1);
         return res;
     }
 }
