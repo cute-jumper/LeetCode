@@ -1,27 +1,19 @@
 public class RemoveKDigits {
     public String removeKdigits(String num, int k) {
         if (num.length() == k) return "0";
-        int low = 0;
-        StringBuilder sb = new StringBuilder();
-        while (k != 0 && low + k < num.length()) {
-            char min = '9' + 1;
-            for (int i = low; i <= low + k; i++) {
-                if (num.charAt(i) < min) {
-                    min = num.charAt(i);
-                }
+        Deque<Character> stack = new ArrayDeque<>();
+        for (int i = 0; i < num.length(); i++) {
+            while (k > 0 && !stack.isEmpty() && stack.peek() > num.charAt(i)) {
+                stack.pop();
+                k--;
             }
-            for (int i = low; i <= low + k; i++) {
-                if (num.charAt(i) == min) {
-                    k -= i - low;
-                    low = i + 1;
-                    sb.append(min);
-                    break;
-                }
-            }
+            stack.push(num.charAt(i));
         }
-        if (k == 0) sb.append(num.substring(low));
-        int index = 0;
-        while (index < sb.length() && sb.charAt(index) == '0') index++;
-        return index == sb.length() ? "0" : sb.substring(index).toString();
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty() && stack.peekLast() == '0') {
+            stack.pollLast();
+        }
+        while (stack.size() > k) sb.append(stack.pollLast());
+        return sb.length() == 0 ? "0" : sb.toString();
     }
 }
