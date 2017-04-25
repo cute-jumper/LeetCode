@@ -32,24 +32,17 @@ public class NestedIterator implements Iterator<Integer> {
 
     @Override
     public boolean hasNext() {
-        while (!iter.hasNext() && !stack.isEmpty()) {
-            iter = stack.pollFirst();
-        }
-        if (iter.hasNext()) {
-            NestedInteger ni = iter.next();
-            while (!ni.isInteger()) {
-                stack.offerFirst(iter);
-                iter = ni.getList().iterator();
-                if (!iter.hasNext()) {
-                    while (!iter.hasNext() && !stack.isEmpty()) {
-                        iter = stack.pollFirst();
-                    }
-                    if (!iter.hasNext()) return false;
+        while (iter.hasNext() || !stack.isEmpty()) {
+            if (!iter.hasNext()) iter = stack.pop();
+            else {
+                NestedInteger ni = iter.next();
+                if (ni.isInteger()) {
+                    nextInteger = ni;
+                    return true;
                 }
-                ni = iter.next();
+                stack.push(iter);
+                iter = ni.getList().iterator();
             }
-            nextInteger = ni;
-            return true;
         }
         return false;
     }
