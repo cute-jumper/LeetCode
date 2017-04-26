@@ -3,88 +3,40 @@ public class SlidingWindowMedian {
         TreeMap<Integer, Integer> minHeap = new TreeMap<>();
         TreeMap<Integer, Integer> maxHeap = new TreeMap<>();
         double[] res = new double[nums.length - k + 1];
-        int[] ns = new int[k];
-        for (int i = 0; i < k; i++) ns[i] = nums[i];
-        int mid1 = findKth(ns, (k - 1) / 2);
-        int maxSize = 0;
-        int minSize = 0;
-        for (int i = 0; i < k; i++) {
-            if (nums[i] > mid1 || nums[i] == mid1 && maxSize == (k + 1) / 2) {
-                add(minHeap, nums[i]);
-                minSize++;
-            } else {
-                add(maxHeap, nums[i]);
-                maxSize++;
+        int[] sizes = new int[2];
+        for (int i = 0; i < nums.length; i++) {
+            if (i < k) add(maxHeap, nums[i], sizes, 0);
+            else {
+                if (nums[i - k] > maxHeap.lastKey()) remove(minHeap, nums[i - k], sizes, 1);
+                else remove(maxHeap, nums[i - k], sizes, 0);
+                if (maxHeap.size() == 0 || nums[i] > maxHeap.lastKey()) add(minHeap, nums[i], sizes, 1);
+                else add(maxHeap, nums[i], sizes, 0);
             }
-        }
-        if (k % 2 == 1) res[0] = mid1;
-        else res[0] = (mid1 + (long)minHeap.firstKey()) / 2.0;
-        for (int i = 1; i < res.length; i++) {
-            if (nums[i-1] > maxHeap.lastKey()) {
-                remove(minHeap, nums[i-1]);
-                minSize--;
-            } else {
-                remove(maxHeap, nums[i-1]);
-                maxSize--;
+            if (i >= k - 1) {
+                balance(maxHeap, minHeap, sizes);
+                if (k % 2 == 1) res[i - k + 1] = maxHeap.lastKey();
+                else res[i - k + 1] = ((double)maxHeap.lastKey() + minHeap.firstKey()) / 2.0;
             }
-            int key = nums[i + k - 1];
-            if (maxHeap.size() == 0 || key > maxHeap.lastKey()) {
-                add(minHeap, key);
-                minSize++;
-            } else {
-                add(maxHeap, key);
-                maxSize++;
-            }
-            while (maxSize < minSize) {
-                add(maxHeap, remove(minHeap, minHeap.firstKey()));
-                minSize--;
-                maxSize++;
-            }
-            while (maxSize > minSize + 1) {
-                add(minHeap, remove(maxHeap, maxHeap.lastKey()));
-                minSize++;
-                maxSize--;
-            }
-            if (k % 2 == 1) res[i] = maxHeap.lastKey();
-            else res[i] = ((long)maxHeap.lastKey() + minHeap.firstKey()) / 2.0;
         }
         return res;
     }
-    public int remove(TreeMap<Integer, Integer> map, int key) {
+    public int remove(TreeMap<Integer, Integer> map, int key, int[] sizes, int index) {
         map.put(key, map.get(key) - 1);
         if (map.get(key) == 0) map.remove(key);
+        sizes[index]--;
         return key;
     }
-    public void add(TreeMap<Integer, Integer> map, int key) {
+    public void add(TreeMap<Integer, Integer> map, int key, int[] sizes, int index) {
         if (!map.containsKey(key)) map.put(key, 0);
         map.put(key, map.get(key) + 1);
+        sizes[index]++;
     }
-    public int findKth(int[] nums, int k) {
-        int low = 0, high = nums.length - 1;
-        int pIndex = partition(nums, low, high);
-        while (pIndex != k) {
-            if (pIndex > k) {
-                high = pIndex - 1;
-            } else {
-                low = pIndex + 1;
-            }
-            pIndex = partition(nums, low, high);
+    public void balance(TreeMap<Integer, Integer> maxHeap, TreeMap<Integer, Integer> minHeap, int[] sizes) {
+        while (sizes[0] < sizes[1]) {
+            add(maxHeap, remove(minHeap, minHeap.firstKey(), sizes, 1), sizes, 0);
         }
-        return nums[k];
-    }
-    public int partition(int[] nums, int low, int high) {
-        int pivot = nums[high];
-        int index = low;
-        for (int i = low; i < high; i++) {
-            if (nums[i] < pivot) {
-                int tmp = nums[i];
-                nums[i] = nums[index];
-                nums[index] = tmp;
-                index++;
-            }
+        while (sizes[0] > sizes[1] + 1) {
+            add(minHeap, remove(maxHeap, maxHeap.lastKey(), sizes, 0), sizes, 1);
         }
-        nums[high] = nums[index];
-        nums[index] = pivot;
-        return index;
     }
 }
