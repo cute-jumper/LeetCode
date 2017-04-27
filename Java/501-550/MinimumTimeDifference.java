@@ -8,23 +8,21 @@ public class MinimumTimeDifference {
         Arrays.sort(times, new Comparator<int[]>() {
                 @Override
                 public int compare(int[] a, int[] b) {
-                    if (a[0] < b[0]) return -1;
-                    if (a[0] > b[0]) return 1;
-                    if (a[1] < b[1]) return -1;
-                    if (a[1] > b[1]) return 1;
+                    if (a[0] != b[0]) return a[0] - b[0];
+                    if (a[1] != b[1]) return a[1] - b[1];
                     return 0;
                 }
             });
-        int[] prev = times[0];
         int minDiff = Integer.MAX_VALUE;
         for (int i = 1; i < times.length; i++) {
-            minDiff = Math.min(minDiff, timeDiff(prev, times[i]));
-            prev = times[i];
+            minDiff = Math.min(minDiff, timeDiff(times[i - 1], times[i]));
         }
-        return Math.min(minDiff, timeDiff(times[0], prev));
+        return Math.min(minDiff, timeDiff(times[times.length - 1], times[0]));
     }
     public int timeDiff(int[] a, int[] b) {
-        return Math.min(60 * (b[0] - a[0]) + b[1] - a[1],
-                        60 * (a[0] + 24 - b[0]) + a[1] - b[1]);
+        if (a[0] > b[0] || a[0] == b[0] && a[1] > b[1]) {
+            b[0] += 24;
+        }
+        return 60 * (b[0] - a[0]) + b[1] - a[1];
     }
 }
