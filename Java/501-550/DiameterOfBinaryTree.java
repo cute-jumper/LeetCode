@@ -8,16 +8,17 @@
  * }
  */
 public class DiameterOfBinaryTree {
+    int diameter = 0;
     public int diameterOfBinaryTree(TreeNode root) {
         if (root == null) return 0;
-        return getDiameter(root)[0] - 1;
+        getDiameter(root);
+        return diameter;
     }
-    public int[] getDiameter(TreeNode root) {
-        if (root == null) return new int[] { 0, 0 };
-        int[] left = getDiameter(root.left);
-        int[] right = getDiameter(root.right);
-        int diameter = left[1] + right[1] + 1;
-        return new int[] { Math.max(diameter, Math.max(left[0], right[0])),
-                           1 + Math.max(left[1], right[1])};
+    public int getDiameter(TreeNode root) {
+        if (root == null) return -1;
+        int left = getDiameter(root.left);
+        int right = getDiameter(root.right);
+        diameter = Math.max(diameter, left + right + 2);
+        return Math.max(left, right) + 1;
     }
 }
