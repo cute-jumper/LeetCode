@@ -11,18 +11,18 @@ public class MostFrequentSubtreeSum {
     public int[] findFrequentTreeSum(TreeNode root) {
         Map<Integer, Integer> count = new HashMap<>();
         getSubTreeSum(root, count);
-        List<Integer> mostFreq = new ArrayList<>();
-        int max = 0;
+        int max = -1;
+        int cnt = 0;
         for (Map.Entry<Integer, Integer> entry : count.entrySet()) {
-            max = Math.max(max, entry.getValue());
+            if (entry.getValue() == max) cnt++;
+            else if (entry.getValue() > max) {
+                max = entry.getValue();
+                cnt = 1;
+            }
         }
+        int[] res = new int[cnt];
         for (Map.Entry<Integer, Integer> entry : count.entrySet()) {
-            if (entry.getValue() == max)
-                mostFreq.add(entry.getKey());
-        }
-        int[] res = new int[mostFreq.size()];
-        for (int i = 0; i < res.length; i++) {
-            res[i] = mostFreq.get(i);
+            if (entry.getValue() == max) res[--cnt] = entry.getKey();
         }
         return res;
     }
