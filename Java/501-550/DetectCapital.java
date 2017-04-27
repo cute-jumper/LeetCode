@@ -1,23 +1,9 @@
 public class DetectCapital {
     public boolean detectCapitalUse(String word) {
-        if (word.length() == 0) return true;
-        char c = word.charAt(0);
-        int type = 0;
-        if (c >= 'A' && c <= 'Z') type = 1;
-        for (int i = 1; i < word.length(); i++) {
-            c = word.charAt(i);
-            if (type == 1) {
-                if (c >= 'a' && c <= 'z') {
-                    type = 2;
-                } else {
-                    type = 3;
-                }
-            } else if ((type == 0 || type == 2) && c >= 'A' && c <= 'Z') {
-                return false;
-            } else if (type == 3 && c >= 'a' && c <= 'z') {
-                return false;
-            }
+        int count = 0;
+        for (int i = 0; i < word.length(); i++) {
+            if (word.charAt(i) <= 'Z') count++;
         }
-        return true;
+        return count == 0 || count == word.length() || count == 1 && word.charAt(0) <= 'Z';
     }
 }
