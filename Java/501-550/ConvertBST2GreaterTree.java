@@ -14,13 +14,9 @@ public class ConvertBST2GreaterTree {
     }
     public int greaterSum(TreeNode root, int parentSum) {
         if (root == null) return 0;
-        root.val += subtreeSum(root.right) + parentSum;
-        greaterSum(root.right, parentSum);
-        greaterSum(root.left, root.val);
-        return root.val;
-    }
-    public int subtreeSum(TreeNode root) {
-        if (root == null) return 0;
-        return root.val + subtreeSum(root.left) + subtreeSum(root.right);
+        int val = root.val;
+        int rightVal = greaterSum(root.right, parentSum);
+        root.val += rightVal + parentSum;
+        return val + rightVal + greaterSum(root.left, root.val);
     }
 }
