@@ -10,26 +10,19 @@
 public class MinimumAbsDiffInBST {
     public int getMinimumDifference(TreeNode root) {
         Deque<TreeNode> stack = new ArrayDeque<>();
-        TreeNode node = root;
-        while (node != null) {
-            stack.push(node);
-            node = node.left;
-        }
-        boolean init = false;
-        int prev = 0;
+        TreeNode node = root, prev = null;
         int minDiff = Integer.MAX_VALUE;
-        while (!stack.isEmpty()) {
-            node = stack.pop();
-            if (!init) {
-                init = true;
-            } else {
-                minDiff = Math.min(minDiff, node.val - prev);
-            }
-            prev = node.val;
-            node = node.right;
-            while (node != null) {
+        while (node != null || !stack.isEmpty()) {
+            if (node != null) {
                 stack.push(node);
                 node = node.left;
+            } else {
+                node = stack.pop();
+                if (prev != null) {
+                    minDiff = Math.min(minDiff, node.val - prev.val);
+                }
+                prev = node;
+                node = node.right;
             }
         }
         return minDiff;
