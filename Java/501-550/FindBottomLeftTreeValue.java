@@ -8,18 +8,22 @@
  * }
  */
 public class FindBottomLeftTreeValue {
+    int maxLevel = -1;
+    int left = -1;
     public int findBottomLeftValue(TreeNode root) {
-        int[] res = getBottomLeft(root, 0);
-        return res[0];
+        getBottomLeft(root, 0);
+        return left;
     }
-    public int[] getBottomLeft(TreeNode root, int depth) {
-        if (root.left == null && root.right == null)
-            return new int[] { root.val, depth };
-        if (root.left == null) return getBottomLeft(root.right, depth + 1);
-        else if (root.right == null) return getBottomLeft(root.left, depth + 1);
-        int[] left = getBottomLeft(root.left, depth + 1);
-        int[] right = getBottomLeft(root.right, depth + 1);
-        if (left[1] >= right[1]) return left;
-        else return right;
+    public void getBottomLeft(TreeNode root, int depth) {
+        if (root == null) return;
+        if (root.left == null && root.right == null) {
+            if (depth > maxLevel) {
+                maxLevel = depth;
+                left = root.val;
+            }
+            return;
+        }
+        getBottomLeft(root.left, depth + 1);
+        getBottomLeft(root.right, depth + 1);
     }
 }
