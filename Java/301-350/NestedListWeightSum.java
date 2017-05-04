@@ -30,4 +30,26 @@ public class NestedListWeightSum {
         }
         return sum;
     }
+    // public int depthSum(List<NestedInteger> nestedList) {
+    //     Deque<Iterator<NestedInteger>> stack = new ArrayDeque<>();
+    //     int depth = 1;
+    //     int sum = 0;
+    //     Iterator<NestedInteger> iter = nestedList.iterator();
+    //     while (true) {
+    //         while (!iter.hasNext() && !stack.isEmpty()) {
+    //             iter = stack.pop();
+    //             depth--;
+    //         }
+    //         if (!iter.hasNext()) break;
+    //         NestedInteger ni = iter.next();
+    //         if (ni.isInteger()) {
+    //             sum += depth * ni.getInteger();
+    //         } else {
+    //             stack.push(iter);
+    //             depth++;
+    //             iter = ni.getList().iterator();
+    //         }
+    //     }
+    //     return sum;
+    // }
 }
