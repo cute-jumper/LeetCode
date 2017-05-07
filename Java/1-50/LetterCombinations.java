@@ -1,27 +1,27 @@
 public class LetterCombinations {
-    public static String[] MAPPINGS = new String[] {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+    public static String[] map = new String[] {"", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
     public List<String> letterCombinations(String digits) {
-        if (digits.length() == 0) {
-            return new ArrayList<String>();
-        }
-        List<String> combs;
-        if (digits.length() == 1) {
-            combs = new ArrayList<String>() {{
-                    add("");
-                }};
-        } else {
-            combs = letterCombinations(digits.substring(1));
-        }
-        List<String> ret = new ArrayList<String>();
-        char c = digits.charAt(0);
-        if (Character.isDigit(c)) {
-            for (int i =0; i < MAPPINGS[c - '0'].length(); i++) {
-                char letter = MAPPINGS[c - '0'].charAt(i);
-                for (String s : combs) {
-                    ret.add(letter + s);
+        int[] pos = new int[digits.length()];
+        List<String> res = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        int index = pos.length - 1;
+        while (index != -1) {
+            sb.setLength(0);
+            for (int i = 0; i < pos.length; i++) {
+                String s = map[digits.charAt(i) - '0'];
+                if (s.length() == 0) return res;
+                sb.append(s.charAt(pos[i]));
+            }
+            res.add(sb.toString());
+            for (index = pos.length - 1; index >=0; index--) {
+                if (pos[index] == map[digits.charAt(index) - '0'].length() - 1) {
+                    pos[index] = 0;
+                } else {
+                    pos[index]++;
+                    break;
                 }
             }
         }
-        return ret;
+        return res;
     }
 }
