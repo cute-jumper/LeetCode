@@ -1,4 +1,4 @@
-public class Lswrc {
+public class LongestSubstringWithoutRepeat {
     public int lengthOfLongestSubstring(String s) {
         int[] index = new int[256];
         int longest = 0;
