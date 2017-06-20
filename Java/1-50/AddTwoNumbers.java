@@ -9,7 +9,7 @@ public class AddTwoNumbers {
         int add = 0;
         ListNode head = new ListNode(0);
         ListNode curr = head;
-        while (l1 != null || l2 != null) {
+        while (l1 != null || l2 != null || add != 0) {
             int res = add;
             if (l1 != null) {
                 res += l1.val;
@@ -23,9 +23,6 @@ public class AddTwoNumbers {
             curr.next = node;
             curr = curr.next;
             add = res / 10;
-        }
-        if (add == 1) {
-            curr.next = new ListNode(1);
         }
         return head.next;
     }
