@@ -1,30 +1,23 @@
 public class ThreeSumClosest {
     public int threeSumClosest(int[] nums, int target) {
+        int minDiff = Integer.MAX_VALUE;
+        int sum = 0;
         Arrays.sort(nums);
-        int closest = Integer.MAX_VALUE;
-        for (int i = 0; i < nums.length - 2 && closest != 0; i++) {
-            closest = twoSumClosest(target - nums[i], nums, i + 1, closest);
-        }
-        return target + closest;
-    }
-
-    public int twoSumClosest(int sum, int[] nums, int start, int closest) {
-        int low = start, high = nums.length - 1;
-        while (low < high) {
-            int target = nums[low] + nums[high];
-            int diff = target - sum;
-            if (diff == 0) {
-                return diff;
-            }
-            if (Math.abs(diff) < Math.abs(closest)) {
-                closest = diff;
-            }
-            if (diff < 0) {
-                low++;
-            } else {
-                high--;
+        for (int i = 0; i + 2 < nums.length; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            int low = i + 1, high = nums.length - 1;
+            while (low < high) {
+                int s = nums[low] + nums[high] + nums[i];
+               	int diff = s - target;
+                int absDiff = Math.abs(diff);
+                if (diff > 0) high--;
+                else low++;
+                if (absDiff < minDiff) {
+                    minDiff = absDiff;
+                    sum = s;
+                }
             }
         }
-        return closest;
+        return sum;
     }
 }
