@@ -1,23 +1,25 @@
 public class Solution {
     public boolean isMatch(String s, String p) {
-        if (p.length() == 0) return s.length() == 0;
-        if (p.length() == 1) {
-            if (p.charAt(0) == '.') return s.length() == 1;
-            return s.length() == 1 && s.charAt(0) == p.charAt(0);
-        }
-        if (p.charAt(1) == '*') {
-            boolean match = isMatch(s, p.substring(2));
-            int index = 0;
-            while (!match && index < s.length() &&
-                   (s.charAt(index) == p.charAt(0) || p.charAt(0) == '.')) {
-                match = isMatch(s.substring(index + 1), p.substring(2));
-                index++;
+        int[][] memo = new int[s.length() + 1][p.length()];
+        return isMatch(memo, s, p, 0, 0);
+    }
+    private boolean isMatch(int[][] memo, String s, String p, int ss, int ps) {
+       	if (ps == p.length()) return ss == s.length();
+        if (memo[ss][ps] != 0) return memo[ss][ps] == 1;
+        if (ps < p.length() - 1 && p.charAt(ps + 1) == '*') {
+            boolean match = isMatch(memo, s, p, ss, ps + 2);
+            if (!match && ss < s.length() && (p.charAt(ps) == '.' || p.charAt(ps) == s.charAt(ss))) {
+                match = isMatch(memo, s, p, ss + 1, ps + 2) || isMatch(memo, s, p, ss + 1, ps);
             }
+            memo[ss][ps] = match ? 1 : -1;
             return match;
-        } else {
-            if (s.length() < 1) return false;
-            return (p.charAt(0) == '.' || p.charAt(0) == s.charAt(0)) &&
-                isMatch(s.substring(1), p.substring(1));
         }
+        if (ss < s.length() && (p.charAt(ps) == '.' || p.charAt(ps) == s.charAt(ss))) {
+            boolean match = isMatch(memo, s, p, ss + 1, ps + 1);
+            memo[ss][ps] = match ? 1 : -1;
+            return match;
+        }
+        memo[ss][ps] = -1;
+        return false;
     }
 }
