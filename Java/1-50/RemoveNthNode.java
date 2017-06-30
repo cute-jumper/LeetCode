@@ -23,4 +23,17 @@ public class RemoveNthNode {
         node.next = node.next.next;
         return vh.next;
     }
+    // public ListNode removeNthFromEnd(ListNode head, int n) {
+    //     ListNode vhead = new ListNode(0);
+    //     vhead.next = head;
+    //     ListNode fast = vhead;
+    //     for (int i = 0; i < n; i++) fast = fast.next;
+    //     ListNode slow = vhead;
+    //     while (fast.next != null) {
+    //         fast = fast.next;
+    //         slow = slow.next;
+    //     }
+    //     slow.next = slow.next.next;
+    //     return vhead.next;
+    // }
 }
