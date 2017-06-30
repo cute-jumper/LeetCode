@@ -1,27 +1,14 @@
 public class Integer2Roman {
     public String intToRoman(int num) {
-        int[] steps = new int[] { 1, 5, 10, 50, 100, 500, 1000 };
-        int[] limits = new int[] { 1, 4, 9, 40, 90, 400, 900 };
-        char[] letters = new char[] { 'I', 'V', 'X', 'L', 'C', 'D', 'M'};
+        int[] steps = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] strs = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+
         StringBuilder sb = new StringBuilder();
-        int index = steps.length - 1;
-        while (num > 0) {
-            while (num >= limits[index]) {
-                int n = num / steps[index];
-                int substract = 0;
-                if (n == 0) {
-                    sb.append(letters[(index - 1) / 2  * 2]);
-                    sb.append(letters[index]);
-                    substract = limits[index];
-                } else {
-                    for (int i = 0; i < n; i++) {
-                        sb.append(letters[index]);
-                    }
-                    substract = n * steps[index];
-                }
-                num -= substract;
+        for (int i = 0; i < steps.length; i++) {
+            while (num >= steps[i]) {
+                sb.append(strs[i]);
+                num -= steps[i];
             }
-            index--;
         }
         return sb.toString();
     }
