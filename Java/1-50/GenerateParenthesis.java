@@ -1,28 +1,19 @@
 public class GenerateParenthesis {
     public List<String> generateParenthesis(int n) {
-        List<String> init = new ArrayList<>();
-        init.add("");
-        return generate(n, 0, init);
-    }
-    public List<String> generate(int n, int counter, List<String> heads) {
-        if (n == 0 && counter == 0) {
-            return heads;
-        }
         List<String> res = new ArrayList<>();
-        List<String> newHeads = new ArrayList<>();
-        if (n > 0) {
-            for (String s : heads) {
-                newHeads.add(s + '(');
-            }
-            res.addAll(generate(n - 1, counter + 1, newHeads));
-        }
-        if (counter > 0) {
-            newHeads = new ArrayList<>();
-            for (String s : heads) {
-                newHeads.add(s + ')');
-            }
-            res.addAll(generate(n, counter - 1, newHeads));
-        }
+        generate(res, "", n, 0);
         return res;
+    }
+    private void generate(List<String> res, String curr, int left, int right) {
+        if (left == 0 && right == 0) {
+            res.add(curr);
+            return;
+        }
+        if (right > 0) {
+            generate(res, curr + ')', left, right - 1);
+        }
+        if (left > 0) {
+            generate(res, curr + '(', left - 1, right + 1);
+        }
     }
 }
