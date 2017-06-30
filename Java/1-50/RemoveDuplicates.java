@@ -1,18 +1,10 @@
 public class RemoveDuplicates {
     public int removeDuplicates(int[] nums) {
-        if (nums.length == 0) {
-            return 0;
+        int index = 0;
+        for (int i = 0; i < nums.length; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            nums[index++] = nums[i];
         }
-        int currentIndex = 0;
-        int startIndex = 0;
-        do {
-            nums[currentIndex++] = nums[startIndex];
-            int nextIndex = startIndex + 1;
-            while (nextIndex < nums.length && nums[nextIndex] == nums[startIndex]) {
-                nextIndex++;
-            }
-            startIndex = nextIndex;
-        } while (startIndex < nums.length);
-        return currentIndex;
+        return index;
     }
 }
