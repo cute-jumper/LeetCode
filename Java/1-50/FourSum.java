@@ -1,60 +1,35 @@
 public class FourSum {
     public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> res = new ArrayList<>();
         Arrays.sort(nums);
-        if (nums.length < 4) {
-            return new ArrayList<List<Integer>>();
-        }
-        return kSum(target, nums, 0, 4);
+        kSum(res, nums, target, 0, nums.length - 1, new ArrayList<>(), 4);
+        return res;
     }
-
-    public List<List<Integer>> kSum(int sum, int[] nums, int start, int k) {
+    private void kSum(List<List<Integer>> res, int[] nums, int target, int low, int high, List<Integer> curr, int k) {
+        if (high - low + 1 < k) return;
         if (k == 2) {
-            return twoSum(sum, nums, start);
-        }
-        List<List<Integer>> ret = new ArrayList<>();
-        int prev = nums[start] - 1;
-        int end = nums.length - k + 1;
-        for (int i = start; i < end; i++) {
-            while (i < end && nums[i] == prev) {
-                i++;
-            }
-            if (i == end) {
-                break;
-            }
-            List<List<Integer>> large = new ArrayList<>();
-            List<List<Integer>> small = kSum(sum - nums[i], nums, i + 1, k - 1);
-            for (List<Integer> s : small) {
-                List<Integer> cur = new ArrayList<>();
-                cur.add(nums[i]);
-                cur.addAll(s);
-                large.add(cur);
-            }
-            ret.addAll(large);
-            prev = nums[i];
-        }
-        return ret;
-    }
-
-    public List<List<Integer>> twoSum(int sum, int[] nums, int start) {
-        List<List<Integer>> ret = new ArrayList<>();
-        int low = start, high = nums.length - 1;
-        while (low < high) {
-            if (nums[low] + nums[high] == sum) {
-                List<Integer> twoInts = new ArrayList<>();
-                twoInts.add(nums[low]);
-                twoInts.add(nums[high]);
-                ret.add(twoInts);
-                int newLow = low + 1;
-                while (newLow < high && nums[low] == nums[newLow]) {
-                    newLow++;
+            while (low < high) {
+                int s = nums[low] + nums[high];
+                if (s < target) low++;
+                else if (s > target) high--;
+                else {
+                    List<Integer> list = new ArrayList<>(curr);
+                    list.add(nums[low]);
+                    list.add(nums[high]);
+                    res.add(list);
+                    while (low < high && nums[low] == nums[low + 1]) low++;
+                    while (low < high && nums[high - 1] == nums[high]) high--;
+                    low++;
+                    high--;
                 }
-                low = newLow;
-            } else if (nums[low] + nums[high] > sum) {
-                high--;
-            } else {
-                low++;
+            }
+        } else {
+            for (int i = low; i + k - 1 <= high; i++) {
+                if (i > low && nums[i] == nums[i - 1]) continue;
+                curr.add(nums[i]);
+                kSum(res, nums, target - nums[i], i + 1, high, curr, k - 1);
+                curr.remove(curr.size() - 1);
             }
         }
-        return ret;
     }
 }
