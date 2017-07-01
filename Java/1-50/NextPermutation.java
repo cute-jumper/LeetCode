@@ -1,37 +1,25 @@
 public class NextPermutation {
     public void nextPermutation(int[] nums) {
-        int head = findHead(nums);
-        if (head == 0) {
-            reverseRange(nums, 0, nums.length - 1);
-        } else {
-            int nextIndex = nums.length - 1;
-            for (int i = nextIndex; i >= head; i--) {
-                if (nums[i] > nums[head - 1]) {
-                    nextIndex = i;
-                    break;
-                }
-            }
-            int tmp = nums[nextIndex];
-            nums[nextIndex] = nums[head - 1];
-            nums[head - 1] = tmp;
-            reverseRange(nums, head, nums.length - 1);
+        int index = nums.length - 2;
+        while (index >= 0 && nums[index] >= nums[index + 1]) index--;
+        if (index >= 0) {
+            int val = nums[index];
+            int replace = nums.length - 1;
+            while (replace > index && nums[replace] <= val) replace--;
+            swap(nums, index, replace);
+        }
+        reverse(nums, index + 1, nums.length - 1);
+    }
+    private void reverse(int[] nums, int low, int high) {
+        while (low < high) {
+            swap(nums, low, high);
+            low++;
+            high--;
         }
     }
-    public int findHead(int[] nums) {
-        int prev = nums[nums.length - 1];
-        for (int i = nums.length - 2; i >= 0; i--) {
-            if (nums[i] < prev) {
-                return i + 1;
-            }
-            prev = nums[i];
-        }
-        return 0;
-    }
-    public void reverseRange(int[] nums, int low, int high) {
-        for (; low < high; low++, high--) {
-            int tmp = nums[low];
-            nums[low] = nums[high];
-            nums[high] = tmp;
-        }
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
     }
 }
