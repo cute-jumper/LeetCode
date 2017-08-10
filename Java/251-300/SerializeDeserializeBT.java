@@ -61,3 +61,34 @@ public class Codec {
 // Your Codec object will be instantiated and called as such:
 // Codec codec = new Codec();
 // codec.deserialize(codec.serialize(root));
+    // // Encodes a tree to a single string.
+    // public String serialize(TreeNode root) {
+    //     StringBuilder sb = new StringBuilder();
+    //     preorder(sb, root);
+    //     return sb.toString();
+    // }
+    // public void preorder(StringBuilder sb, TreeNode root) {
+    //     if (root == null) sb.append("null,");
+    //     else {
+    //         sb.append(root.val + ",");
+    //         preorder(sb, root.left);
+    //         preorder(sb, root.right);
+    //     }
+    // }
+
+    // // Decodes your encoded data to tree.
+    // public TreeNode deserialize(String data) {
+    //     String[] ps = data.split(",");
+    //     Queue<String> queue = new ArrayDeque<>();
+    //     for (String p : ps) queue.offer(p);
+    //     return toTree(queue);
+    // }
+    // TreeNode toTree(Queue<String> queue) {
+    //     if (queue.isEmpty()) return null;
+    //     String s = queue.poll();
+    //     if (s.equals("null")) return null;
+    //     TreeNode node = new TreeNode(Integer.parseInt(s));
+    //     node.left = toTree(queue);
+    //     node.right=  toTree(queue);
+    //     return node;
+    // }
