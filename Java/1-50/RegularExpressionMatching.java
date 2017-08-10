@@ -22,4 +22,19 @@ public class Solution {
         memo[ss][ps] = -1;
         return false;
     }
+    // boolean[][] match = new boolean[s.length() + 1][p.length() + 1];
+    // match[0][0] = true;
+    // for (int i = 1; i <= p.length(); i++) match[0][i] = i > 1 && match[0][i - 2] && p.charAt(i - 1) == '*';
+    // for (int i = 0; i < s.length(); i++) {
+    //     char c1 = s.charAt(i);
+    //     for (int j = 0; j < p.length(); j++) {
+    //         char c2 = p.charAt(j);
+    //         if (c2 == '*') {
+    //             match[i + 1][j + 1] = match[i + 1][j - 1] || match[i][j + 1] && (p.charAt(j - 1) == '.' || p.charAt(j - 1) == c1);
+    //         } else {
+    //             match[i + 1][j + 1] = (c2 == '.' || c1 == c2) && match[i][j];
+    //         }
+    //     }
+    // }
+    // return match[s.length()][p.length()];
 }
