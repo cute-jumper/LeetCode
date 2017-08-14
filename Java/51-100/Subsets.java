@@ -1,26 +1,16 @@
 public class  {
     public List<List<Integer>> subsets(int[] nums) {
-        Arrays.sort(nums);
         List<List<Integer>> res = new ArrayList<>();
-        for (int i = 0; i <= nums.length; i++)
-            res.addAll(genSubsets(nums, 0, i));
+        subsets(res, new ArrayList<>(), nums, 0);
         return res;
     }
-    public List<List<Integer>> genSubsets(int[] nums, int start, int k) {
-        List<List<Integer>> res = new ArrayList<>();
-        if (k == 0) {
-            res.add(new ArrayList<Integer>());
-            return res;
-        }
+    void subsets(List<List<Integer>> res, List<Integer> curr, int[] nums, int start) {
+        res.add(new ArrayList<>(curr));
+        if (start == nums.length) return;
         for (int i = start; i < nums.length; i++) {
-            List<List<Integer>> subRes = genSubsets(nums, i + 1, k - 1);
-            for (List<Integer> r: subRes) {
-                List<Integer> rs = new ArrayList<>();
-                rs.add(nums[i]);
-                rs.addAll(r);
-                res.add(rs);
-            }
+            curr.add(nums[i]);
+            subsets(res, curr, nums, i + 1);
+            curr.remove(curr.size() - 1);
         }
-        return res;
     }
 }
