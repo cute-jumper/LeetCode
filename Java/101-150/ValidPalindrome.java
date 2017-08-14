@@ -1,20 +1,18 @@
 public class ValidPalindrome {
     public boolean isPalindrome(String s) {
-        s = s.toLowerCase();
-        int low = 0;
-        int high = s.length() - 1;
+        int low = 0, high = s.length() - 1;
         while (low < high) {
-            while (low < high) {
-                if (Character.isLetterOrDigit(s.charAt(low))) break;
-                else low++;
+            char c1 = s.charAt(low);
+            char c2 = s.charAt(high);
+            if (!Character.isLetterOrDigit(c1)) {
+                low++;
+            } else if (!Character.isLetterOrDigit(c2)) {
+                high--;
+            } else {
+                if (Character.toLowerCase(c1) != Character.toLowerCase(c2)) return false;
+                low++;
+                high--;
             }
-            while (low < high) {
-                if (Character.isLetterOrDigit(s.charAt(high))) break;
-                else high--;
-            }
-            if (s.charAt(low) != s.charAt(high)) return false;
-            low++;
-            high--;
         }
         return true;
     }
