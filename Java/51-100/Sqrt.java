@@ -1,20 +1,15 @@
 public class Sqrt {
     public int mySqrt(int x) {
         if (x <= 1) return x;
-        if (x < 4) return 1;
-        int low = 0;
+        int low = 1;
         int high = x;
-        while (low <= high) {
-            int r = (low + high) / 2;
-            long diff = ((long)r) * r - x;
-            if (diff == 0) {
-                return r;
-            } else if (diff > 0) {
-                high = r - 1;
-            } else {
-                low = r + 1;
-            }
+        while (low < high) {
+            int mid = low + (high - low + 1) / 2;
+            int quo = x / mid;
+            if (mid == quo) return mid;
+            else if (mid < quo) low = mid;
+            else high = mid - 1;
         }
-        return high * high > x ? high - 1 : high;
+        return low;
     }
 }
