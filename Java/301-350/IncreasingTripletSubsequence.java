@@ -1,13 +1,10 @@
 public class IncreasingTripletSubsequence {
     public boolean increasingTriplet(int[] nums) {
-        int first = Integer.MAX_VALUE, second = Integer.MAX_VALUE;
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] > second) return true;
-            if (nums[i] <= first) {
-                first = nums[i];
-            } else {
-                second = nums[i];
-            }
+        int s1 = Integer.MAX_VALUE, s2 = Integer.MAX_VALUE;
+        for (int i : nums) {
+            if (i <= s1) s1 = i;
+            else if (i <= s2) s2 = i;
+            else return true;
         }
         return false;
     }
