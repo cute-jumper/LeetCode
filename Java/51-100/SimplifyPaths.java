@@ -1,19 +1,16 @@
 public class SimplifyPaths {
     public String simplifyPath(String path) {
-        String[] components = path.split("/");
-        ArrayList<String> current = new ArrayList<>();
-        for (int i = 0; i < components.length; i++) {
-            if (components[i].equals("..")) {
-                if (current.size() != 0)
-                    current.remove(current.size() - 1);
-            } else if (!(components[i].equals(".") || components[i].equals(""))) {
-                current.add(components[i]);
-            }
+        String[] ps = path.split("/");
+        String[] dirs = new String[ps.length];
+        int index = 0;
+        for (String p : ps) {
+            if (p.equals("..")) index = Math.max(index - 1, 0);
+            else if (!(p.equals(".") || p.equals(""))) dirs[index++] = p;
         }
         StringBuilder sb = new StringBuilder();
-        if (current.size() == 0) return "/";
-        for (String s : current)
-            sb.append("/" + s);
-        return sb.toString();
+        for (int i = 0; i < index; i++) {
+            sb.append('/' + dirs[i]);
+        }
+        return sb.length() == 0 ? "/" : sb.toString();
     }
 }
