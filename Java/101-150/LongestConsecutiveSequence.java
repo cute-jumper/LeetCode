@@ -1,38 +1,18 @@
 public class Solution {
     public int longestConsecutive(int[] nums) {
-        if (nums.length == 0) return 0;
-        Map<Integer, Integer> intervals = new HashMap<>();
-        int maxLen = 1;
-        Set<Integer> shown = new HashSet<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        Set<Integer> set = new HashSet<>();
+        int max = 0;
         for (int i : nums) {
-            if (shown.contains(i)) continue;
-            if (intervals.containsKey(i - 1) && intervals.containsKey(i + 1)) {
-                int low = intervals.get(i - 1);
-                int high = intervals.get(i + 1);
-                intervals.put(low, high);
-                intervals.put(high, low);
-                if (low != i - 1) intervals.remove(i - 1);
-                if (high != i + 1) intervals.remove(i + 1);
-                maxLen = Math.max(high - low + 1, maxLen);
-            } else if (intervals.containsKey(i - 1)) {
-                int low = intervals.get(i - 1);
-                if (low > i - 1) continue;
-                intervals.put(low, i);
-                intervals.put(i, low);
-                if (low != i - 1) intervals.remove(i - 1);
-                maxLen = Math.max(i - low + 1, maxLen);
-            } else if (intervals.containsKey(i + 1)) {
-                int high = intervals.get(i + 1);
-                if (high < i + 1) continue;
-                intervals.put(i, high);
-                intervals.put(high, i);
-                if (high != i + 1) intervals.remove(i + 1);
-                maxLen = Math.max(high - i + 1, maxLen);
-            } else {
-                intervals.put(i, i);
+            if (set.add(i)) {
+                int left = map.containsKey(i - 1) ? map.get(i - 1) : 0;
+                int right = map.containsKey(i + 1) ? map.get(i + 1) : 0;
+                int len = left + 1 + right;
+                max = Math.max(max, len);
+                map.put(i - left, len);
+                map.put(i + right, len);
             }
-            shown.add(i);
         }
-        return maxLen;
+        return max;
     }
 }
