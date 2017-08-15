@@ -1,27 +1,31 @@
 public class KthLargestElement {
     public int findKthLargest(int[] nums, int k) {
-        return quickselect(nums, 0, nums.length - 1, k - 1);
+        int low = 0, high = nums.length - 1;
+        int index = partition(nums, low, high);
+        while (index != k - 1) {
+            if (index > k - 1) {
+                high = index - 1;
+            } else {
+                low = index + 1;
+            }
+            index = partition(nums, low, high);
+        }
+        return nums[index];
     }
-    public int quickselect(int[] nums, int low, int high, int k) {
-        if (low == high) return nums[low];
-        int pivotIndex = partition(nums, low, high);
-        if (pivotIndex == k) return nums[k];
-        if (pivotIndex < k) return quickselect(nums, pivotIndex + 1, high, k);
-        return quickselect(nums, low, pivotIndex - 1, k);
-    }
-    public int partition(int[] nums, int low, int high) {
+    int partition(int[] nums, int low, int high) {
         int pivot = nums[high];
         int index = low;
         for (int i = low; i < high; i++) {
             if (nums[i] > pivot) {
-                int tmp = nums[index];
-                nums[index] = nums[i];
-                nums[i] = tmp;
-                index++;
+                swap(nums, index++, i);
             }
         }
-        nums[high] = nums[index];
-        nums[index] = pivot;
+        swap(nums, index, high);
         return index;
+    }
+    void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
     }
 }
