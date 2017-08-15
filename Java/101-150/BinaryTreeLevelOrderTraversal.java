@@ -10,18 +10,17 @@
 public class BinaryTreeLevelOrderTraversal {
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
-        List<TreeNode> current = new ArrayList<>();
-        if (root != null) current.add(root);
-        while (current.size() > 0) {
-            List<Integer> level = new ArrayList<>();
-            List<TreeNode> next = new ArrayList<>();
-            for (TreeNode node : current) {
-                level.add(node.val);
-                if (node.left != null) next.add(node.left);
-                if (node.right != null) next.add(node.right);
+        Deque<TreeNode> queue = new ArrayDeque<>();
+        if (root != null) queue.offer(root);
+        while (!queue.isEmpty()) {
+            List<Integer> vals = new ArrayList<>();
+            for (int i = 0, size = queue.size(); i < size; i++) {
+                TreeNode node = queue.poll();
+                vals.add(node.val);
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
             }
-            res.add(level);
-            current = next;
+            res.add(vals);
         }
         return res;
     }
