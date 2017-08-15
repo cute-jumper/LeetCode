@@ -1,51 +1,44 @@
 public class TheSkylineProblem {
     static class Point implements Comparable<Point> {
         int x;
-        int y;
-        Point prev;
-        public Point(int x, int y) {
+        int h;
+        boolean left;
+        Point(int x, int h, boolean left) {
             this.x = x;
-            this.y = y;
+            this.h = h;
+            this.left = left;
         }
         @Override
-        public int compareTo(Point that) {
-            if (x != that.x) return x - that.x;
-            if (prev != null && that.prev != null) return y - that.y;
-            if (prev != null) return 1;
-            if (that.prev != null) return -1;
-            return that.y - y;
+        public int compareTo(Point o) {
+            if (x != o.x) return x - o.x;
+            return getH() - o.getH();
+        }
+        private int getH() {
+            return left ? -h : h;
         }
     }
     public List<int[]> getSkyline(int[][] buildings) {
-        List<int[]> res = new ArrayList<>();
-        if (buildings == null || buildings.length == 0) return res;
         Point[] ps = new Point[buildings.length * 2];
         int index = 0;
         for (int[] b : buildings) {
-            ps[index + 1] = new Point(b[1], b[2]);
-            ps[index + 1].prev = ps[index] = new Point(b[0], b[2]);
-            index += 2;
+            ps[index++] = new Point(b[0], b[2], true);
+            ps[index++] = new Point(b[1], b[2], false);
         }
         Arrays.sort(ps);
-        PriorityQueue<Point> pq = new PriorityQueue<>(ps.length, new Comparator<Point>() {
-                @Override
-                public int compare(Point a, Point b) {
-                    return b.y - a.y;
-                }
-            });
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        List<int[]> res = new ArrayList<>();
+        pq.offer(0);
+        int prev = 0;
         for (Point p : ps) {
-            if (p.prev != null) {
-                pq.remove(p.prev);
-                if (pq.isEmpty()) {
-                    res.add(new int[] { p.x, 0 });
-                } else if (pq.peek().y != res.get(res.size() - 1)[1]) {
-                    res.add(new int[] { p.x, pq.peek().y });
-                }
+            if (p.left) {
+                pq.offer(-p.h);
             } else {
-                if ((pq.isEmpty() || p.y > pq.peek().y)) {
-                    res.add(new int[] { p.x, p.y });
-                }
-                pq.add(p);
+                pq.remove(-p.h);
+            }
+            int highest = -pq.peek();
+            if (highest != prev) {
+                res.add(new int[] { p.x, highest });
+                prev = highest;
             }
         }
         return res;
