@@ -9,17 +9,13 @@
  */
 public class Solution {
     public boolean findTarget(TreeNode root, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
-        return traverse(map, root, k);
+        Set<Integer> set = new HashSet<>();
+        return traverse(set, root, k);
     }
-    boolean traverse(Map<Integer, Integer> map, TreeNode root, int k) {
+    boolean traverse(Set<Integer> set, TreeNode root, int k) {
         if (root == null) return false;
-        int remain = k - root.val;
-        if (map.containsKey(remain)) {
-            if (root.val != remain || map.get(remain) > 1) return true;
-        }
-        if (!map.containsKey(root.val)) map.put(root.val, 1);
-        else map.put(root.val, map.get(root.val) + 1);
-        return traverse(map, root.left, k) || traverse(map, root.right, k);
+        if (set.contains(k - root.val)) return true;
+        set.add(root.val);
+        return traverse(set, root.left, k) || traverse(set, root.right, k);
     }
 }
