@@ -1,43 +1,41 @@
 public class TaskScheduler {
-    class Item implements Comparable<Item> {
+        static class Task implements Comparable<Task> {
         int freq;
-        char c;
-        Item(int freq, char c) {
+        Task(int freq) {
             this.freq = freq;
-            this.c = c;
         }
-        public int compareTo(Item a) {
-            return a.freq - this.freq;
+        @Override
+        public int compareTo(Task o) {
+            return o.freq - freq;
         }
     }
     public int leastInterval(char[] tasks, int n) {
-        if (n == 0) return tasks.length;
-        Deque<Item> queue = new ArrayDeque<>();
         Map<Character, Integer> map = new HashMap<>();
-        for (char c : tasks) {
-            if (map.containsKey(c)) map.put(c, map.get(c) + 1);
-            else map.put(c, 1);
+        for (char i : tasks) {
+            if (map.containsKey(i)) map.put(i, map.get(i) + 1);
+            else map.put(i, 1);
         }
-        PriorityQueue<Item> pq = new PriorityQueue<Item>();
-        for (Map.Entry<Character, Integer> entry : map.entrySet()) {
-            pq.add(new Item(entry.getValue(), entry.getKey()));
+        PriorityQueue<Task> queue = new PriorityQueue<>();
+        for (Character key : map.keySet()) {
+            queue.offer(new Task(map.get(key)));
         }
-        int count = tasks.length, res = tasks.length;
+        Deque<Task> waitQueue = new ArrayDeque<>();
+        int count = tasks.length;
+        int ticks = 0;
         while (count > 0) {
-            if (pq.isEmpty()) {
-                res++;
-                queue.offer(new Item(0, '0'));
-            } else {
-                Item item = pq.poll();
-                item.freq--;
+            ticks++;
+            if (queue.isEmpty()) waitQueue.offer(new Task(-1));
+            else {
+                Task t = queue.poll();
+                t.freq--;
                 count--;
-                queue.offer(item);
+                waitQueue.offer(t);
             }
-            if (queue.size() > n) {
-                Item next = queue.poll();
-                if (next.freq != 0) pq.add(next);
+            if (waitQueue.size() > n) {
+                Task t = waitQueue.poll();
+                if (t.freq > 0) queue.offer(t);
             }
         }
-        return res;
+        return ticks;
     }
 }
