@@ -1,43 +1,23 @@
 public class DecodWays2 {
     public int numDecodings(String s) {
         if (s.length() == 0) return 0;
-        long prev = 0;
-        char c = s.charAt(0);
-        long[][] dp = new long[s.length()][10];
-        int mod = 1000000007;
-        if (c == '*') {
-            for (int i = 1; i < 10; i++) dp[0][i] = 1;
-            prev = 9;
-        } else if (c != '0') {
-            dp[0][c - '0'] = 1;
-            prev = 1;
-        } else {
-            prev = 0;
-        }
-        long oldPrev = 1;
-        for (int j = 1; j < s.length(); j++) {
-            c = s.charAt(j);
+        long e = 1, e1 = 0, e2 = 0, mod = 1000000007;
+        for (char c : s.toCharArray()) {
+            long f = 0, f1 = 0, f2 = 0;
             if (c == '*') {
-                for (int i = 1; i < 10; i++) dp[j][i] = prev;
-                if (dp[j - 1][1] != 0) {
-                    for (int i = 1; i < 10; i++) dp[j][i] += oldPrev;
-                }
-                if (dp[j - 1][2] != 0) {
-                    for (int i = 1; i < 7; i++) dp[j][i] += oldPrev;
-                }
+                f = (9 * e) % mod + (9 * e1) % mod + (6 * e2) % mod;
+                f1 = f2 = e;
             } else {
-                if (c != '0') dp[j][c - '0'] = prev;
-                if (dp[j - 1][1] != 0) dp[j][c - '0'] += oldPrev;
-                if (dp[j - 1][2] != 0 && c <= '6') dp[j][c - '0'] += oldPrev;
+                f = e1;
+                if (c > '0') f = (f + e) % mod;
+                if (c <= '6') f = (f + e2) % mod;
+                if (c == '1') f1 = e;
+                else if (c == '2') f2 = e;
             }
-            oldPrev = prev;
-            prev = 0;
-            for (int i = 0; i < 10; i++) {
-                dp[j][i] %= mod;
-                prev += dp[j][i];
-            }
-            prev %= mod;
+            e = f % mod;
+            e1 = f1;
+            e2 = f2;
         }
-        return (int)prev;
+        return (int) e;
     }
 }
