@@ -15,4 +15,11 @@ public class SubtreeOfAnotherTree {
         if (n1 == null || n2 == null) return n1 == n2;
         return n1.val == n2.val && sameTree(n1.left, n2.left) && sameTree(n1.right, n2.right);
     }
+    // public boolean isSubtree(TreeNode s, TreeNode t) {
+    //     return treeToString(s).indexOf(treeToString(t)) != -1;
+    // }
+    // String treeToString(TreeNode root) {
+    //     if (root == null) return "null";
+    //     return "#" + root.val + "," + treeToString(root.left) + "," + treeToString(root.right);
+    // }
 }
