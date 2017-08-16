@@ -10,19 +10,18 @@
 public class AverageOfLevelsInBT {
     public List<Double> averageOfLevels(TreeNode root) {
         List<Double> res = new ArrayList<>();
-        if (root == null) return res;
         Deque<TreeNode> queue = new ArrayDeque<>();
-        queue.offer(root);
+        if (root != null) queue.offer(root);
         while (!queue.isEmpty()) {
+            double s = 0;
             int size = queue.size();
-            long sum = 0;
             for (int i = 0; i < size; i++) {
-                TreeNode n = queue.poll();
-                sum += n.val;
-                if (n.left != null) queue.offer(n.left);
-                if (n.right != null) queue.offer(n.right);
+                TreeNode node = queue.poll();
+                s += node.val;
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
             }
-            res.add((double)sum / size);
+            res.add(s / size);
         }
         return res;
     }
