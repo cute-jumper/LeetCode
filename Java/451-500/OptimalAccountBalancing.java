@@ -1,51 +1,30 @@
 public class OptimalAccountBalancing {
     public int minTransfers(int[][] transactions) {
         Map<Integer, Integer> map = new HashMap<>();
-        for (int[] trans : transactions) {
-            update(map, trans[0], trans[2]);
-            update(map, trans[1], -trans[2]);
+        for (int[] tran : transactions) {
+            add(map, tran[0], tran[2]);
+            add(map, tran[1], -tran[2]);
         }
-        List<Integer> balance = new ArrayList<>();
-        for (Integer val : map.values()) {
-            if (val != 0) balance.add(val);
+        List<Integer> balances = new ArrayList<>();
+        for (Integer v : map.values()) {
+            if (v != 0) balances.add(v);
         }
-        Collections.sort(balance, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer a, Integer b) {
-                return Math.abs(a) - Math.abs(b);
-            }
-        });
-        return dfs(balance, 0);
+        return dfs(balances, 0, 0);
     }
-    private int dfs(List<Integer> balance, int step) {
-        int minStep = Integer.MAX_VALUE;
-        for (int i = 0; i < balance.size(); i++) {
-            if (balance.get(i) != 0) {
-                int iVal = balance.get(i);
-                for (int j = i + 1, prev = 0; j < balance.size(); j++) {
-                    int jVal = balance.get(j);
-                    if (jVal == 0 || jVal == prev) continue;
-                    if (jVal > 0 && iVal < 0 || jVal < 0 && iVal > 0) {
-                        if (Math.abs(iVal) < Math.abs(jVal)) {
-                            balance.set(j, iVal + jVal);
-                            balance.set(i, 0);
-                        } else {
-                            balance.set(i, iVal + jVal);
-                            balance.set(j, 0);
-                        }
-                        minStep = Math.min(minStep, dfs(balance, step + 1));
-                        balance.set(i, iVal);
-                        balance.set(j, jVal);
-                        prev = jVal;
-                    }
-                }
-                break;
+    int dfs(List<Integer> balances, int start, int count) {
+        while (start < balances.size() && balances.get(start) == 0) start++;
+        int min = Integer.MAX_VALUE;
+        for (int i = start + 1; i < balances.size(); i++) {
+            if (balances.get(start) * balances.get(i) < 0) {
+                balances.set(i, balances.get(i) + balances.get(start));
+                min = Math.min(min, dfs(balances, start + 1, count + 1));
+                balances.set(i, balances.get(i) - balances.get(start));
             }
         }
-        return minStep == Integer.MAX_VALUE ? step : minStep;
+        return min == Integer.MAX_VALUE ? count : min;
     }
-    private void update(Map<Integer, Integer> map, int key, int val) {
-        if (!map.containsKey(key)) map.put(key, 0);
-        map.put(key, map.get(key) + val);
+    void add(Map<Integer, Integer> map, int k, int v) {
+        if (map.containsKey(k)) map.put(k, map.get(k) + v);
+        else map.put(k, v);
     }
 }
