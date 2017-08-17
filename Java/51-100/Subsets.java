@@ -6,7 +6,6 @@ public class  {
     }
     void subsets(List<List<Integer>> res, List<Integer> curr, int[] nums, int start) {
         res.add(new ArrayList<>(curr));
-        if (start == nums.length) return;
         for (int i = start; i < nums.length; i++) {
             curr.add(nums[i]);
             subsets(res, curr, nums, i + 1);
