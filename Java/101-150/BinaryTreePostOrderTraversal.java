@@ -28,4 +28,35 @@ public class BinaryTreePostOrderTraversal {
         }
         return res;
     }
+    // public List<Integer> postorderTraversal(TreeNode root) {
+    //     List<Integer> res = new ArrayList<>();
+    //     PostOrderIterator it = new PostOrderIterator(root);
+    //     while (it.hasNext()) res.add(it.next().val);
+    //     return res;
+    // }
+    // static class PostOrderIterator {
+    //     Deque<TreeNode> stack = new ArrayDeque<>();
+    //     TreeNode curr = null;
+    //     PostOrderIterator(TreeNode root) {
+    //         while (root != null) {
+    //             stack.push(root);
+    //             root = root.left;
+    //         }
+    //     }
+    //     boolean hasNext() {
+    //         return !stack.isEmpty();
+    //     }
+    //     TreeNode next() {
+    //         if (stack.peek().right != curr) {
+    //             curr = stack.peek().right;
+    //             while (curr != null) {
+    //                 stack.push(curr);
+    //                 curr = curr.left;
+    //             }
+    //             return next();
+    //         }
+    //         curr = stack.pop();
+    //         return curr;
+    //     }
+    // }
 }
