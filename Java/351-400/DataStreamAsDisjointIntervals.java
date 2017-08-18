@@ -8,55 +8,38 @@
  * }
  */
 public class SummaryRanges {
-    Map<Integer, Integer> map1 = new HashMap<>();
-    Map<Integer, Integer> map2 = new HashMap<>();
-    Set<Integer> set = new HashSet<>();
+
+    Map<Integer, Integer> map;
+    Set<Integer> set;
 
     /** Initialize your data structure here. */
     public SummaryRanges() {
-
+        map = new HashMap<>();
+        set = new HashSet<>();
     }
 
     public void addNum(int val) {
-        if (!set.add(val) || map1.containsKey(val) || map2.containsKey(val)) return;
-        boolean added = false;
-        if (map2.containsKey(val - 1)) {
-            int low = map2.get(val - 1);
-            map1.put(low, val);
-            map2.put(val, low);
-            map2.remove(val - 1);
-            added = true;
-        }
-        if (map1.containsKey(val + 1)) {
-            int high = map1.get(val + 1);
-            if (map2.containsKey(val)) {
-                int low = map2.get(val);
-                map1.put(low, high);
-                map2.put(high, low);
-            } else {
-                map1.put(val, high);
-                map2.put(high, val);
-            }
-            map1.remove(val + 1);
-            added = true;
-        }
-        if (!added) {
-            map1.put(val, val);
-            map2.put(val, val);
+        if (set.add(val)) {
+            int left = map.containsKey(val - 1) ? map.get(val - 1) : 0;
+            int right = map.containsKey(val + 1) ? map.get(val + 1) : 0;
+            int len = left + 1 + right;
+            map.put(val - left, len);
+            map.put(val + right, len);
         }
     }
 
     public List<Interval> getIntervals() {
         List<Interval> res = new ArrayList<>();
-        for (Map.Entry<Integer, Integer> entry : map1.entrySet()) {
-            res.add(new Interval(entry.getKey(), entry.getValue()));
-        }
-        Collections.sort(res, new Comparator<Interval>() {
-            @Override
-            public int compare(Interval a, Interval b) {
-                return a.start - b.start;
+        if (set.size() == 0) return res;
+        List<Integer> keys = new ArrayList<>(set);
+        Collections.sort(keys);
+        int nextAllowed = 0;
+        for (Integer i : keys) {
+            if (i >= nextAllowed) {
+                res.add(new Interval(i, i + map.get(i) - 1));
+                nextAllowed = i + map.get(i) + 1;
             }
-        });
+        }
         return res;
     }
 }
