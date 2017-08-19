@@ -2,29 +2,19 @@ public class ReconstructItinerary {
     public List<String> findItinerary(String[][] tickets) {
         Map<String, PriorityQueue<String>> map = new HashMap<>();
         for (String[] ticket : tickets) {
-            if (map.containsKey(ticket[0])) {
-                map.get(ticket[0]).add(ticket[1]);
-            } else {
-                PriorityQueue<String> pq = new PriorityQueue<>();
-                pq.add(ticket[1]);
-                map.put(ticket[0], pq);
-            }
-        }
-        String departure = "JFK";
-        Deque<String> stack = new ArrayDeque<>();
-        stack.addFirst(departure);
-        while (map.containsKey(departure) && !map.get(departure).isEmpty()) {
-            departure = map.get(departure).poll();
-            stack.offerFirst(departure);
+            if (!map.containsKey(ticket[0])) map.put(ticket[0], new PriorityQueue<>());
+            map.get(ticket[0]).offer(ticket[1]);
         }
         List<String> res = new ArrayList<>();
-        while (res.size() <= tickets.length) {
-            departure = stack.peekFirst();
-            while (map.containsKey(departure) && !map.get(departure).isEmpty()) {
-                departure = map.get(departure).poll();
-                stack.offerFirst(departure);
+        Deque<String> stack = new ArrayDeque<>();
+        stack.push("JFK");
+        while (!stack.isEmpty()) {
+            String airport = stack.peek();
+            while (map.containsKey(airport) && !map.get(airport).isEmpty()) {
+                airport = map.get(airport).poll();
+                stack.push(airport);
             }
-            res.add(stack.pollFirst());
+            res.add(stack.pop());
         }
         Collections.reverse(res);
         return res;
