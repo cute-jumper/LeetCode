@@ -1,35 +1,25 @@
 public class FractionToRecurDecimal {
     public String fractionToDecimal(int numerator, int denominator) {
-        Map<Long, Integer> shown = new HashMap<>();
-        boolean negative = numerator > 0 && denominator < 0 || numerator < 0 && denominator > 0;
-        long quot = (long)numerator / denominator;
-        long rem = numerator % denominator;
+        long d = Math.abs((long) denominator);
+        long q = (long) numerator / denominator;
+        long r = Math.abs(numerator % d);
+        if (r == 0) return "" + q;
         StringBuilder sb = new StringBuilder();
-        sb.append(quot);
-        if (rem != 0) {
-            sb.append('.');
-        }
-        int index = sb.length();
-        shown.put(rem, index);
-        while (rem != 0) {
-            rem *= 10;
-            quot = Math.abs(rem / denominator);
-            rem = rem % denominator;
-            sb.append(quot);
-            index++;
-            if (shown.containsKey(rem)) {
-                break;
+        if ((numerator < 0) != (denominator < 0)) sb.append('-');
+        sb.append(Math.abs(q) + ".");
+        Map<Long, Integer> map = new HashMap<>();
+        map.put(r, sb.length());
+        while (r != 0) {
+            r *= 10;
+            sb.append(r / d);
+            r %= d;
+            if (map.containsKey(r)) {
+                String s = sb.toString();
+                return s.substring(0, map.get(r)) + "(" + s.substring(map.get(r)) + ")";
             } else {
-                shown.put(rem, index);
+                map.put(r, sb.length());
             }
         }
-        if (rem != 0) {
-            sb.append(')');
-            index = shown.get(rem);
-            sb.insert(index, '(');
-        }
-        if (negative && sb.charAt(0) != '-')
-            return "-" + sb.toString();
         return sb.toString();
     }
 }
