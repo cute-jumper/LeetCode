@@ -4,13 +4,11 @@ public class LongestValidParentheses {
         int max = 0;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-            if (c == '(' || stack.isEmpty() || s.charAt(stack.peek()) != '(')
-                stack.push(i);
-            else {
+            if (c == ')' && !stack.isEmpty() && s.charAt(stack.peek()) == '(') {
                 stack.pop();
-                if (stack.isEmpty()) max = Math.max(max, i + 1);
-                else max = Math.max(max, i - stack.peek());
+                max = Math.max(max, i - (stack.isEmpty() ? -1 : stack.peek()));
             }
+            else stack.push(i);
         }
         return max;
     }
