@@ -1,44 +1,29 @@
 public class BasicCalculator {
     public int calculate(String s) {
-        Deque<String> stack = new ArrayDeque<>();
+        Deque<Integer> stack = new ArrayDeque<>();
+        int sign = 1;
         int num = 0;
-        boolean negative = false;
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            int index = i;
-            while (c >= '0' && c <= '9') {
-                num *= 10;
-                num += c - '0';
-                index++;
-                if (index == s.length()) break;
-                c = s.charAt(index);
-            }
-            if (index != i) {
-                num = negative ? -num : num;
-                stack.push("" + num);
+        int curr = 0;
+        for (char c : s.toCharArray()) {
+            if (c == '+' || c == '-') {
+                curr += sign * num;
                 num = 0;
-                negative = false;
-            }
-            i = index;
-            if (c == '-') negative = true;
-            else if (c == '(') {
-                if (negative) stack.push("[");
-                else stack.push("(");
-                negative = false;
-            }
-            else if (c == ')') {
-                int sum = 0;
-                while (!stack.peek().equals("(") && !stack.peek().equals("[")) {
-                    sum += Integer.parseInt(stack.pop());
-                }
-                if (stack.pop().equals("[")) sum = -sum;
-                stack.push("" + sum);
+                sign = c == '+' ? 1 : -1;
+            } else if ('0' <= c && c <= '9') {
+                num = 10 * num + (c - '0');
+            } else if (c == '(') {
+                stack.push(curr);
+                stack.push(sign);
+                curr = num = 0;
+                sign = 1;
+            } else if (c == ')') {
+                curr += sign * num;
+                curr *= stack.pop();
+                curr += stack.pop();
+                num = 0;
             }
         }
-        int res = 0;
-        while (!stack.isEmpty()) {
-            res += Integer.parseInt(stack.pop());
-        }
-        return res;
+        if (num > 0) curr += num * sign;
+        return curr;
     }
 }
