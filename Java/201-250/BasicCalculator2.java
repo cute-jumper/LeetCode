@@ -1,47 +1,38 @@
 public class BasicCaculator2 {
     public int calculate(String s) {
-        Deque<String> queue = new ArrayDeque<>();
-        int index = 0;
-        while (index < s.length()) {
-            char c = s.charAt(index);
-            if (c >= '0' && c <= '9') {
-                StringBuilder sb = new StringBuilder();
-                sb.append(c);
-                index++;
-                while (index <= s.length()) {
-                    if (index < s.length()) c = s.charAt(index);
-                    if (index == s.length() || c < '0' || c > '9') {
-                        String op = queue.peekLast();
-                        if (op != null && (op.equals("*") || op.equals("/"))) {
-                            queue.removeLast();
-                            int first = Integer.parseInt(queue.removeLast());
-                            int num =  Integer.parseInt(sb.toString());
-                            if (op.equals("*")) queue.addLast(first * num + "");
-                            else queue.addLast(first / num + "");
-                        } else {
-                            queue.addLast(sb.toString());
-                        }
-                        break;
-                    }
-                    sb.append(c);
-                    index++;
+        Deque<Integer> stack = new ArrayDeque<>();
+        char op = '+';
+        int num = 0;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if ('0' <= c && c <= '9') {
+                num = num * 10 + (c - '0');
+            }
+            if (i == s.length() - 1 || c != ' ' && (c < '0' || c > '9')) {
+                switch (op) {
+                case '+': {
+                    stack.push(num);
+                    break;
                 }
+                case '-': {
+                    stack.push(-num);
+                    break;
+                }
+                case '*': {
+                    stack.push(stack.pop() * num);
+                    break;
+                }
+                case '/': {
+                    stack.push(stack.pop() / num);
+                    break;
+                }
+                }
+                op = c;
+                num = 0;
             }
-            if (index < s.length() && c != ' ') {
-                queue.addLast(c + "");
-            }
-            index++;
         }
-        int res = Integer.parseInt(queue.removeFirst());
-        while (!queue.isEmpty()) {
-            char op = queue.removeFirst().charAt(0);
-            int second = Integer.parseInt(queue.removeFirst());
-            if (op == '+') {
-                res += second;
-            } else {
-                res -= second;
-            }
-        }
+        int res = 0;
+        while (!stack.isEmpty()) res += stack.pop();
         return res;
     }
 }
