@@ -1,57 +1,47 @@
 public class EvaluateDivision {
-    static class Item {
-        String variable;
-        double val;
-        public Item(String variable, double val) {
-            this.variable = variable;
-            this.val = val;
-        }
-    }
+    String[][] equations;
+    double[] values;
+    double val;
     public double[] calcEquation(String[][] equations, double[] values, String[][] queries) {
-        Map<String, List<Item>> map = new HashMap<>();
+        this.equations = equations;
+        this.values = values;
+        Map<String, List<Integer>> map = new HashMap<>();
         for (int i = 0; i < equations.length; i++) {
-            if (!map.containsKey(equations[i][0])) {
-                map.put(equations[i][0], new ArrayList<Item>());
-            }
-            map.get(equations[i][0]).add(new Item(equations[i][1], values[i]));
-            if (!map.containsKey(equations[i][1])) {
-                map.put(equations[i][1], new ArrayList<Item>());
-            }
-            map.get(equations[i][1]).add(new Item(equations[i][0], 1 / values[i]));
+            add(map, equations[i][0], i + 1);
+            add(map, equations[i][1], - i - 1);
         }
         double[] res = new double[queries.length];
         for (int i = 0; i < queries.length; i++) {
-            Set<String> visited = new HashSet<>();
-            Set<String> prefix = new HashSet<>();
-            Deque<Double> stack = new ArrayDeque<>();
-            if (dfs(map, visited, prefix, stack, queries[i][0], queries[i][1])) {
-                res[i] = 1;
-                while (!stack.isEmpty()) {
-                    res[i] *= stack.pop();
-                }
+            String[] query = queries[i];
+            if (dfs(map, new boolean[equations.length], query[0], query[1], 1)) {
+                res[i] = this.val;
             } else {
-                res[i] = -1.0;
+                res[i] = -1;
             }
         }
         return res;
     }
-    public boolean dfs(Map<String, List<Item>> map, Set<String> visited, Set<String> prefix, Deque<Double> stack,
-                      String start, String end) {
-        if (start.equals(end)) {
-            return map.containsKey(start);
+    boolean dfs(Map<String, List<Integer>> map, boolean[] visited, String from, String to, double curr) {
+        if (from.equals(to)) {
+            val = curr;
+            return map.containsKey(from);
         }
-        if (!map.containsKey(start)) return false;
-        List<Item> items = map.get(start);
-        for (Item item : items) {
-            if (visited.contains(item.variable) || prefix.contains(item.variable))
-                continue;
-            prefix.add(item.variable);
-            stack.push(item.val);
-            if (dfs(map, visited, prefix, stack, item.variable, end)) return true;
-            prefix.remove(item.variable);
-            stack.pop();
+        if (!map.containsKey(from)) return false;
+        List<Integer> connected = map.get(from);
+        for (Integer i : connected) {
+            int index = Math.abs(i) - 1;
+            if (!visited[index]) {
+                visited[index] = true;
+                boolean success = dfs(map, visited, i < 0 ? equations[index][0] : equations[index][1], to,
+                                    curr * (i < 0 ? 1 / values[index] : values[index]));
+                visited[index] = false;
+                if (success) return true;
+            }
         }
-        visited.add(start);
         return false;
+    }
+    void add(Map<String, List<Integer>> map, String k, int val) {
+        if (!map.containsKey(k)) map.put(k, new ArrayList<>());
+        map.get(k).add(val);
     }
 }
