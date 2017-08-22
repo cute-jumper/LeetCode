@@ -9,21 +9,18 @@
 public class RotateList {
     public ListNode rotateRight(ListNode head, int k) {
         if (head == null || head.next == null || k == 0) return head;
-        int len = 1;
         ListNode node = head;
-        ListNode last = null;
+        int size = 1;
         while (node.next != null) {
-            len++;
             node = node.next;
+            size++;
         }
-        k %= len;
+        k %= size;
         if (k == 0) return head;
         node.next = head;
-        for (int i = 0; i < len - k; i++) {
-            node = node.next;
-        }
-        ListNode newHead = node.next;
+        for (int i = 0; i < size - k; i++) node = node.next;
+        head = node.next;
         node.next = null;
-        return newHead;
+        return head;
     }
 }
