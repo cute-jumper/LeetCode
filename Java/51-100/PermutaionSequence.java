@@ -1,32 +1,25 @@
 public class PermutaionSequence {
     public String getPermutation(int n, int k) {
-        k--;
         int factor = 1;
         int product = 1;
         while (factor < n) {
             product *= factor;
             factor++;
         }
+        k--;
         factor--;
-        boolean[] flags = new boolean[n];
         StringBuilder sb = new StringBuilder();
-        while (factor >= 0) {
-            int counter = 0;
-            int target = k / product + 1;
-            for (int i = 0; i < flags.length; i++) {
-                if (!flags[i]) {
-                    counter++;
-                }
-                if (counter == target) {
-                    flags[i] = true;
-                    sb.append(i + 1);
-                    break;
-                }
-            }
-            if (factor == 0) break;
+        List<Integer> cands = new ArrayList<>();
+        for (int i = 1; i <= n; i++) cands.add(i);
+        while (!cands.isEmpty()) {
+            int index = k / product;
+            sb.append(cands.get(index));
+            cands.remove(index);
             k %= product;
-            product /= factor;
-            factor--;
+            if (factor > 0) {
+                product /= factor;
+                factor--;
+            }
         }
         return sb.toString();
     }
