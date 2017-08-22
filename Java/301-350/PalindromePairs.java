@@ -6,34 +6,22 @@ public class PalindromePairs {
             w2i.put(words[i], i);
         }
         for (int i = 0; i < words.length; i++) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(words[i]);
-            sb = sb.reverse();
-            StringBuilder pref = new StringBuilder();
-            for (int j = 0; j < words[i].length(); j++) {
-                pref.append(words[i].charAt(j));
-                sb.deleteCharAt(sb.length() - 1);
-                if (isPalindrome(pref.toString()) && w2i.containsKey(sb.toString())) {
-                    if (w2i.get(sb.toString()) == i) continue;
-                    List<Integer> pair = new ArrayList<>();
-                    pair.add(w2i.get(sb.toString()));
-                    pair.add(i);
-                    res.add(pair);
-                    if (sb.toString().length() == 0) {
-                        pair = new ArrayList<Integer>(pair);
-                        Collections.reverse(pair);
-                        res.add(pair);
+            for (int j = 1; j <= words[i].length(); j++) {
+                String p = words[i].substring(0, j);
+                String q = words[i].substring(j);
+                if (isPalindrome(p)) {
+                    String qr = new StringBuilder(q).reverse().toString();
+                    if (w2i.containsKey(qr) && w2i.get(qr) != i) {
+                        res.add(Arrays.asList(w2i.get(qr), i));
+                        if (qr.equals("")) res.add(Arrays.asList(i, w2i.get(qr)));
                     }
                 }
-                pref = pref.reverse();
-                if (isPalindrome(sb.toString()) && w2i.containsKey(pref.toString())) {
-                    if (w2i.get(pref.toString()) == i) continue;
-                    List<Integer> pair = new ArrayList<>();
-                    pair.add(i);
-                    pair.add(w2i.get(pref.toString()));
-                    res.add(pair);
+                if (isPalindrome(q)) {
+                    String pr = new StringBuilder(p).reverse().toString();
+                    if (w2i.containsKey(pr) && w2i.get(pr) != i) {
+                        res.add(Arrays.asList(i, w2i.get(pr)));
+                    }
                 }
-                pref = pref.reverse();
             }
         }
         return res;
