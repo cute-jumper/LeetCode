@@ -1,18 +1,12 @@
 public class AddStrings {
     public String addStrings(String num1, String num2) {
-        int carry = 0;
         StringBuilder sb = new StringBuilder();
-        int i = 0;
-        for (; i < num1.length() || i < num2.length(); i++) {
-            int v = carry;
-            if (i < num1.length())
-                v += num1.charAt(num1.length() - 1 - i) - '0';
-            if (i < num2.length())
-                v += num2.charAt(num2.length() - 1 - i) - '0';
-            sb.append(v % 10);
-            carry = v / 10;
+        for (int i = num1.length() - 1, j = num2.length() - 1, c = 0; i >= 0 || j >= 0 || c != 0; i--, j--) {
+            if (i >= 0) c += num1.charAt(i) - '0';
+            if (j >= 0) c += num2.charAt(j) - '0';
+            sb.append(c % 10);
+            c /= 10;
         }
-        if (carry == 1) sb.append(carry);
         return sb.reverse().toString();
     }
 }
