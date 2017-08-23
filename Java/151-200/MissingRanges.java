@@ -1,24 +1,20 @@
 public class MissingRanges {
     public List<String> findMissingRanges(int[] nums, int lower, int upper) {
         List<String> res = new ArrayList<>();
-        for (int i = 0; i < nums.length; i++) {
-            if (nums[i] == lower) {
-                if (nums[i] == Integer.MAX_VALUE) return res;
-                lower++;
-            } else if (nums[i] > lower) {
-                if (nums[i] - lower == 1) {
-                    res.add(lower + "");
-                } else {
-                    res.add(lower + "->" + (nums[i] - 1));
-                }
-                if (nums[i] == Integer.MAX_VALUE) return res;
-                lower = nums[i] +  1;
-            } else {
-                continue;
+        int next = lower;
+        for (int i : nums) {
+            if (i == next) next++;
+            else if (i > next) {
+                res.add(getRange(next, i - 1));;
+                next = i + 1;
             }
+            if (i == upper) return res;
         }
-        if (lower == upper) res.add(lower + "");
-        else if (lower < upper) res.add(lower + "->" + upper);
+        if (upper >= next) res.add(getRange(next, upper));
         return res;
+    }
+    String getRange(int low, int high) {
+        if (high == low) return low + "";
+        else return low + "->" + high;
     }
 }
