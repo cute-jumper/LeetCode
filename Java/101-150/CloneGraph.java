@@ -8,21 +8,16 @@
  */
 public class CloneGraph {
     public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
-        if (node == null) return null;
-        Map<Integer, UndirectedGraphNode> visited= new HashMap<>();
-        return doCloneGraph(node, visited);
+        return cloneGraph(node, new HashMap<>());
     }
-    public UndirectedGraphNode doCloneGraph(UndirectedGraphNode node, Map<Integer, UndirectedGraphNode> visited) {
-        if (!visited.containsKey(node.label)) {
-            UndirectedGraphNode n = new UndirectedGraphNode(node.label);
-            n.neighbors = new ArrayList<UndirectedGraphNode>();
-            visited.put(n.label, n);
-            for (UndirectedGraphNode gn : node.neighbors) {
-                n.neighbors.add(doCloneGraph(gn, visited));
-            }
-            return n;
-        } else {
-            return visited.get(node.label);
+    UndirectedGraphNode cloneGraph(UndirectedGraphNode node, Map<Integer, UndirectedGraphNode> map) {
+        if (node == null) return null;
+        if (map.containsKey(node.label)) return map.get(node.label);
+        UndirectedGraphNode copy = new UndirectedGraphNode(node.label);
+        map.put(copy.label, copy);
+        for (UndirectedGraphNode n : node.neighbors) {
+            copy.neighbors.add(cloneGraph(n, map));
         }
+        return copy;
     }
 }
