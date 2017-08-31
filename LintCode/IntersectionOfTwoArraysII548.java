@@ -5,19 +5,20 @@ public class IntersectionOfTwoArraysII548 {
      * @return an integer array
      */
     public int[] intersection(int[] nums1, int[] nums2) {
-        // Write your code here
-        Arrays.sort(nums1);
-        Arrays.sort(nums2);
-        List<Integer> res = new ArrayList<>();
-        for (int i = 0, j = 0; i < nums1.length && j < nums2.length;) {
-            if (nums1[i] == nums2[j]) {
-                i++;
-                res.add(nums2[j++]);
-            } else if (nums1[i] < nums2[j]) i++;
-            else j++;
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i : nums1) {
+            if (map.containsKey(i)) map.put(i, map.get(i) + 1);
+            else map.put(i, 1);
         }
-        int[] r = new int[res.size()];
-        for (int i = 0; i < r.length; i++) r[i] = res.get(i);
-        return r;
+        List<Integer> intersect = new ArrayList<>();
+        for (int i : nums2) {
+            if (map.containsKey(i)) {
+                map.put(i, map.get(i) - 1);
+                if (map.get(i) >= 0) intersect.add(i);
+            }
+        }
+        int[] res = new int[intersect.size()];
+        for (int i = 0; i < res.length; i++) res[i] = intersect.get(i);
+        return res;
     }
 }
