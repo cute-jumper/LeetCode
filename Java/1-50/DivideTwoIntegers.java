@@ -1,23 +1,17 @@
 public class DivideTwoIntegers {
     public int divide(int dividend, int divisor) {
-        if (dividend == 0) return 0;
-        if (dividend == Integer.MIN_VALUE && divisor == -1) return Integer.MAX_VALUE;
-        if (divisor == 1) return dividend;
-        if (divisor == -1) return -dividend;
-        boolean negative = (dividend < 0 && divisor > 0) || (dividend > 0 && divisor < 0);
-        dividend = -Math.abs(dividend);
-        divisor = -Math.abs(divisor);
-        int quotient = 0;
-        while (dividend <= divisor) {
-            int div = divisor;
-            int quo = 1;
-            while (dividend - div <= div) {
+        long d1 = Math.abs((long) dividend), d2 = Math.abs((long) divisor);
+        long quot = 0;
+        while (d1 >= d2) {
+            long div = d2, q = 1;
+            while (div + div <= d1) {
                 div += div;
-                quo += quo;
+                q += q;
             }
-            dividend = dividend - div;
-            quotient += quo;
+            quot += q;
+            d1 -= div;
         }
-        return negative ? -quotient : quotient;
+        if ((dividend > 0) != (divisor > 0)) quot = -quot;
+        return quot == (int) quot ? (int) quot : Integer.MAX_VALUE;
     }
 }
