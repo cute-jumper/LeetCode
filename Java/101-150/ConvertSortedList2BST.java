@@ -17,24 +17,18 @@
  */
 public class ConvertSortedList2BST {
     public TreeNode sortedListToBST(ListNode head) {
-        int count = 0;
-        ListNode p = head;
-        while (p != null) {
-            count++;
-            p = p.next;
-        }
-        return buildBST(head, count);
+        return toBST(head, null);
     }
-    public TreeNode buildBST(ListNode head, int count) {
-        if (count == 0) return null;
-        int mid = (count + 1) / 2;
-        ListNode p = head;
-        for (int i = 1; i < mid; i++) {
-            p = p.next;
+    TreeNode toBST(ListNode head, ListNode tail) {
+        if (head == tail) return null;
+        ListNode slow = head, fast = head;
+        while (fast.next != tail && fast.next.next != tail) {
+            fast = fast.next.next;
+            slow = slow.next;
         }
-        TreeNode root = new TreeNode(p.val);
-        root.left = buildBST(head, mid - 1);
-        root.right = buildBST(p.next, count - mid);
+        TreeNode root = new TreeNode(slow.val);
+        root.left = toBST(head, slow);
+        root.right = toBST(slow.next, tail);
         return root;
     }
 }
