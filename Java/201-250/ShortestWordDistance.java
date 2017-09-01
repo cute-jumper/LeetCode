@@ -1,18 +1,10 @@
 public class ShortestWordDistance {
     public int shortestDistance(String[] words, String word1, String word2) {
-        int pos1 = -1, pos2 = -1;
-        int min = words.length;
-        int update = 0;
+        int p1 = -1, p2 = -1, min = words.length;
         for (int i = 0; i < words.length; i++) {
-            update &= 3;
-            if (words[i].equals(word1)) {
-                pos1 = i;
-                update |= 5;
-            } else if (words[i].equals(word2)) {
-                pos2 = i;
-                update |= 10;
-            }
-            if ((update & 3) == 3 && update > 3) min = Math.min(min, Math.abs(pos1 - pos2));
+            if (words[i].equals(word1)) p1 = i;
+            else if (words[i].equals(word2)) p2 = i;
+            if (p1 != -1 && p2 != -1) min = Math.min(min, Math.abs(p1 - p2));
         }
         return min;
     }
