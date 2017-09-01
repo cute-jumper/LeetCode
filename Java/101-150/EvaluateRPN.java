@@ -4,26 +4,26 @@ public class EvaluateRPN {
         for (String token : tokens) {
             if (token.equals("+") || token.equals("-") ||
                 token.equals("*") || token.equals("/")) {
-                int a = stack.removeLast();
-                int b = stack.removeLast();
+                int a = stack.pop();
+                int b = stack.pop();
                 switch (token.charAt(0)) {
                 case '+':
-                    stack.addLast(a + b);
+                    stack.push(a + b);
                     break;
                 case '-':
-                    stack.addLast(b - a);
+                    stack.push(b - a);
                     break;
                 case '*':
-                    stack.addLast(a * b);
+                    stack.push(a * b);
                     break;
                 case '/':
-                    stack.addLast(b / a);
+                    stack.push(b / a);
                     break;
                 }
             } else {
-                stack.addLast(Integer.parseInt(token));
+                stack.push(Integer.parseInt(token));
             }
         }
-        return stack.removeLast();
+        return stack.pop();
     }
 }
