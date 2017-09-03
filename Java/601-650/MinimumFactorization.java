@@ -9,11 +9,10 @@ public class MinimumFactorization {
             }
         }
         if (a != 1 || fs.isEmpty()) return 0;
-        Collections.sort(fs);
         long n = 0;
-        for (int i : fs) {
+        for (int i = fs.size() - 1; i >= 0; i--) {
             n *= 10;
-            n += i;
+            n += fs.get(i);
         }
         return n > Integer.MAX_VALUE ? 0 : (int) n;
     }
