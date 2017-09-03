@@ -28,39 +28,30 @@
  */
 public class Solution {
     public NestedInteger deserialize(String s) {
+        int num = 0, sign = 1;
         Deque<NestedInteger> stack = new ArrayDeque<>();
-        int index = 0;
-        NestedInteger current = null;
-        while (index < s.length()) {
-            char c = s.charAt(index);
-            if (c == '[') {
-                if (current != null) stack.push(current);
-                current = new NestedInteger();
-            } else if (c == '-' || c >= '0' && c <= '9') {
-                int num = 0;
-                boolean negative = (c == '-');
-                if (negative) index++;
-                while (index < s.length()) {
-                    c = s.charAt(index);
-                    if (c >= '0' && c <= '9') {
-                        num *= 10;
-                        num += c - '0';
-                    }
-                    if (index == s.length() - 1 || c == ']' || c == ',') {
-                        num = negative ? -num : num;
-                        if (current == null) current = new NestedInteger(num);
-                        else current.add(new NestedInteger(num));
-                        break;
-                    }
-                    index++;
+        NestedInteger curr = null;
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '-') sign = -1;
+            else if (c >= '0' && c <= '9') {
+                num = num * 10 + (c - '0');
+                if (i == s.length() - 1) return new NestedInteger(num * sign);
+            } else if (c == '[') {
+                if (curr != null) stack.push(curr);
+                curr = new NestedInteger();
+            } else if (c == ']' || c == ',') {
+                if (s.charAt(i - 1) >= '0' && s.charAt(i - 1) <= '9') {
+                    curr.add(new NestedInteger(num * sign));
+                    num = 0;
+                    sign = 1;
+                }
+                if (c == ']' && !stack.isEmpty()) {
+                    stack.peek().add(curr);
+                    curr = stack.pop();
                 }
             }
-            if (c == ']' && index < s.length() - 1) {
-                stack.peek().add(current);
-                current = stack.pop();
-            }
-            index++;
         }
-        return current;
+        return curr;
     }
 }
