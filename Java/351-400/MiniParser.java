@@ -54,4 +54,14 @@ public class Solution {
         }
         return curr;
     }
+    // (require 'parsec)
+    // (defun p-ni ()
+    //   (parsec-or (p-int) (p-list)))
+    // (defun p-int ()
+    //   (cons 'int (parsec-many1-s (parsec-digit))))
+    // (defun p-list ()
+    //  (cons 'list (parsec-and
+    //          (parsec-ch ?\[)
+    //          (parsec-return (parsec-sepby (p-ni) (parsec-ch ?,))
+    //            (parsec-ch ?\])))))
 }
