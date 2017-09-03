@@ -10,7 +10,7 @@ public class SentenceScreenFitting {
         for (int i = 0; i < rows; i++) {
             index += cols;
             while (index >= 0 && s.charAt(index % len) != ' ') index--;
-            if (index >= 0 && s.charAt(index % len) == ' ') index++;
+            index++;
         }
         return index / len;
     }
