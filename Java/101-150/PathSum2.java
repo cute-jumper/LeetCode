@@ -10,27 +10,16 @@
 public class PathSum2 {
     public List<List<Integer>> pathSum(TreeNode root, int sum) {
         List<List<Integer>> res = new ArrayList<>();
-        getPathSum(res, new ArrayList<Integer>(), root, sum, 0);
+        pathSum(res, new ArrayList<>(), root, sum);
         return res;
     }
-    public void getPathSum(List<List<Integer>> res,
-                           List<Integer> path,
-                           TreeNode root,
-                           int sum,
-                           int current) {
-        if (root == null) {
-            if (sum == current && path.size() > 0) res.add(new ArrayList<>(path));
-            return;
-        }
-        path.add(root.val);
-        current += root.val;
-        if (root.left == null) {
-            getPathSum(res, path, root.right, sum, current);
-        } else {
-            getPathSum(res, path, root.left, sum, current);
-            if (root.right != null)
-                getPathSum(res, path, root.right, sum, current);
-        }
-        path.remove(path.size() - 1);
+    void pathSum(List<List<Integer>> res, List<Integer> curr, TreeNode root, int sum) {
+        if (root == null) return;
+        curr.add(root.val);
+        sum -= root.val;
+        if (root.left == null && root.right == null && sum == 0) res.add(new ArrayList<>(curr));
+        if (root.left != null) pathSum(res, curr, root.left, sum);
+        if (root.right != null) pathSum(res, curr, root.right, sum);
+        curr.remove(curr.size() - 1);
     }
 }
