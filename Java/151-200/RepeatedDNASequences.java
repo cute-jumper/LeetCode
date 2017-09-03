@@ -5,11 +5,7 @@ public class RepeatedDNASequences {
         Set<String> added = new HashSet<>();
         for (int i = 0; i < s.length() - 9; i++) {
             String sub = s.substring(i, i + 10);
-            if (shown.contains(sub)) {
-                if (added.add(sub)) res.add(sub);
-            } else {
-                shown.add(sub);
-            }
+            if (!shown.add(sub) && added.add(sub)) res.add(sub);
         }
         return res;
     }
