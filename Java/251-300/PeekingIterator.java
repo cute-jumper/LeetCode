@@ -31,6 +31,6 @@ class PeekingIterator implements Iterator<Integer> {
 
     @Override
     public boolean hasNext() {
-        return moved ? true : iter.hasNext();
+        return moved || iter.hasNext();
     }
 }
