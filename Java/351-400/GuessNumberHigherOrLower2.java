@@ -8,7 +8,7 @@ public class GuessNumberHigherOrLower2 {
         dp[n - 1][n - 1] = 0;
         for (int i = 2; i < n; i++) {
             for (int j = 0; j + i < n; j++) {
-                dp[j][j + i] = Integer.MAX_VALUE;
+                dp[j][j + i] = Math.min(dp[j + 1][j + i] + j + 1, dp[j][j + i - 1] + j + i + 1);
                 for (int k = 1; k < i; k++) {
                     dp[j][j + i] = Math.min(dp[j][j + i],
                                             j + k + 1 + Math.max(dp[j][j + k - 1], dp[j + k + 1][j + i]));
