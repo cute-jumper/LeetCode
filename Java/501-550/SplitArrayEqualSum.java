@@ -1,37 +1,19 @@
 public class SplitArrayEqualSum {
     public boolean splitArray(int[] nums) {
-        int len = nums.length;
-        if (len < 7) return false;
-        int[] sum = new int[len];
-        Map<Integer, List<Integer>> index = new HashMap<>();
-        Map<Integer, List<Integer>> map = new HashMap<>();
-        for (int i = 0; i < len; i++) {
-            sum[i] = nums[i];
-            if (i > 0) sum[i] += sum[i - 1];
-            add(map, sum[i], i);
-            add(index, nums[i], i);
-        }
-        int total = sum[len - 1];
-        for (int i = 1; i + 5 < len; i++) {
-            int s = sum[i - 1];
-            int key = total - s;
-            if (!map.containsKey(key)) continue;
-            List<Integer> list = map.get(key);
-            for (int j : list) {
-                if (j < i + 4 || j >= len - 1) continue;
-                int mid = sum[j - 1] - sum[i];
-                int diff = mid - 2 * s;
-                if (!index.containsKey(diff)) continue;
-                List<Integer> cands = index.get(diff);
-                for (int k : cands) {
-                    if (k > i + 1 && k + 1 < j) return true;
-                }
+        if (nums.length < 7) return false;
+        int[] sum = new int[nums.length];
+        sum[0] = nums[0];
+        for (int i = 1; i < nums.length; i++) sum[i] = sum[i - 1] + nums[i];
+        for (int mid = 3; mid + 3 < nums.length; mid++) {
+            Set<Integer> set = new HashSet<>();
+            for (int f = 1; f + 1 < mid; f++) {
+                if (sum[f - 1] == sum[mid - 1] - sum[f]) set.add(sum[f - 1]);
+            }
+            for (int t = mid + 2; t + 1 < nums.length; t++) {
+                if (sum[t - 1] - sum[mid] == sum[nums.length - 1] - sum[t] &&
+                    set.contains(sum[t - 1] - sum[mid]))
+                    return true;
             }
         }
         return false;
-    }
-    void add(Map<Integer, List<Integer>> map, int key, int value) {
-        if (!map.containsKey(key)) map.put(key, new ArrayList<>());
-        map.get(key).add(value);
-    }
 }
