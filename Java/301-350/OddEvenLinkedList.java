@@ -9,13 +9,10 @@
 public class OddEvenLinkedList {
     public ListNode oddEvenList(ListNode head) {
         if (head == null || head.next == null) return head;
-        ListNode evenHead = head.next;
-        ListNode even = evenHead;
-        ListNode odd = head;
+        ListNode evenHead = head.next, even = head.next, odd = head;
         while (even != null && even.next != null) {
-            ListNode next = even.next;
-            odd.next = next;
-            even.next = next.next;
+            odd.next = even.next;
+            even.next = even.next.next;
             odd = odd.next;
             even = even.next;
         }
