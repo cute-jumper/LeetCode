@@ -8,20 +8,14 @@
  */
 public class PopulateNexRightPointers {
     public void connect(TreeLinkNode root) {
-        if (root == null) return;
-        root.next = null;
-        while (root.left != null) {
-            TreeLinkNode p = root;
-            while (p != null) {
-                p.left.next = p.right;
-                if (p.next != null) {
-                    p.right.next = p.next.left;
-                } else {
-                    p.right.next = null;
-                }
-                p = p.next;
+        while (root != null && root.left != null) {
+            TreeLinkNode next = root.left;
+            while (root != null) {
+                root.left.next = root.right;
+                if (root.next != null) root.right.next = root.next.left;
+                root = root.next;
             }
-            root = root.left;
+            root = next;
         }
     }
 }
