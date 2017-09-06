@@ -1,40 +1,21 @@
 public class SuperUglyNumber {
-
-    static class Pair {
-        int val;
-        int index;
-        public Pair(int val, int index) {
-            this.val = val;
-            this.index = index;
-        }
-    }
-
     public int nthSuperUglyNumber(int n, int[] primes) {
-        PriorityQueue<Pair> heap = new PriorityQueue<>(primes.length, new Comparator<Pair>() {
+        int[] pts = new int[primes.length];
+        PriorityQueue<int[]> pq = new PriorityQueue<>(new Comparator<int[]>() {
                 @Override
-                public int compare(Pair p1, Pair p2) {
-                    if (p1.val < p2.val) return -1;
-                    if (p1.val == p2.val) return 0;
-                    return 1;
+                public int compare(int[] a, int[] b) {
+                    return a[0] - b[0];
                 }
             });
-        int[] res = new int[n];
-        int[] indices = new int[primes.length];
-        res[0] = 1;
-        for (int i = 0; i < primes.length; i++) {
-            heap.add(new Pair(primes[i], i));
+        for (int i = 0; i < primes.length; i++) pq.offer(new int[] { primes[i], i });
+        List<Integer> ugly = new ArrayList<>();
+        ugly.add(1);
+        while (ugly.size() < n) {
+            int[] p = pq.poll();
+            if (p[0] != ugly.get(ugly.size() - 1)) ugly.add(p[0]);
+            pts[p[1]]++;
+            pq.offer(new int[] { primes[p[1]] * ugly.get(pts[p[1]]), p[1] });
         }
-        for (int i = 1; i < n; i++) {
-            Pair minPair = heap.poll();
-            res[i] = minPair.val;
-            indices[minPair.index]++;
-            while (!heap.isEmpty() && heap.peek().val == minPair.val) {
-                Pair p = heap.poll();
-                indices[p.index]++;
-                heap.add(new Pair(res[indices[p.index]] * primes[p.index], p.index));
-            }
-            heap.add(new Pair(res[indices[minPair.index]] * primes[minPair.index], minPair.index));
-        }
-        return res[n - 1];
+        return ugly.get(ugly.size() - 1);
     }
 }
