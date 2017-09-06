@@ -1,22 +1,14 @@
 public class LexicographicalNumber {
     public List<Integer> lexicalOrder(int n) {
         List<Integer> res = new ArrayList<>();
-        Deque<Integer> stack = new ArrayDeque<>();
-        int current = 1;
-        while (current <= n) {
-            stack.offerFirst(current);
-            res.add(current);
-            current *= 10;
-        }
-        while (!stack.isEmpty()) {
-            current = stack.pollFirst();
-            if (current % 10 < 9) {
-                current++;
-                while (current <= n) {
-                    stack.offerFirst(current);
-                    res.add(current);
-                    current *= 10;
-                }
+        int curr = 1;
+        for (int i = 1; i <= n; i++) {
+            res.add(curr);
+            if (curr * 10 <= n) curr *= 10;
+            else if (curr % 10 != 9 && curr + 1 <= n) curr++;
+            else {
+                while (curr % 10 == 9 || curr + 1 > n) curr /= 10;
+                curr++;
             }
         }
         return res;
