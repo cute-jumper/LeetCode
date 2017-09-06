@@ -22,9 +22,7 @@ public class TheMaze2 {
             Point p = queue.poll();
             if (maze[p.r][p.c] == 2) continue;
             maze[p.r][p.c] = 2;
-            if (p.r == destination[0] && p.c == destination[1]) {
-                return p.dist;
-            }
+            if (p.r == destination[0] && p.c == destination[1]) return p.dist;
             for (int[] dir : dirs) {
                 int r = p.r + dir[0];
                 int c = p.c + dir[1];
@@ -34,11 +32,7 @@ public class TheMaze2 {
                     c += dir[1];
                     dist++;
                 }
-                r -= dir[0];
-                c -= dir[1];
-                if (dist > p.dist) {
-                    queue.offer(new Point(dist, r, c));
-                }
+                if (dist > p.dist) queue.offer(new Point(dist, r - dir[0], c - dir[1]));
             }
         }
         return -1;
