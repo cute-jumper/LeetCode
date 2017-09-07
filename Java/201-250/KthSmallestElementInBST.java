@@ -10,21 +10,16 @@
 public class KthSmallestElementInBST {
     public int kthSmallest(TreeNode root, int k) {
         Deque<TreeNode> stack = new ArrayDeque<>();
-        TreeNode node = root;
-        while (node != null) {
-            stack.offerFirst(node);
-            node = node.left;
-        }
-        while (k != 0) {
-            node = stack.pollFirst();
-            k--;
-            if (k == 0) return node.val;
-            node = node.right;
-            while (node != null) {
-                stack.offerFirst(node);
-                node = node.left;
+        while (root != null || !stack.isEmpty()) {
+            if (root != null) {
+                stack.push(root);
+                root = root.left;
+            } else {
+                root = stack.pop();
+                if (k-- == 1) break;
+                root = root.right;
             }
         }
-        return 0;
+        return root.val;
     }
 }
