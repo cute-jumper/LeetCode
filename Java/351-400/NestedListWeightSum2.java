@@ -28,21 +28,13 @@
  */
 public class NestedListWeightSum2 {
     public int depthSumInverse(List<NestedInteger> nestedList) {
-        int sum = 0;
-        int acc = 0;
-        Deque<NestedInteger> current = new ArrayDeque<>();
-        for (NestedInteger ni : nestedList) current.offer(ni);
-        while (!current.isEmpty()) {
-            int size = current.size();
-            for (int i = 0; i < size; i++) {
-                NestedInteger ni = current.poll();
-                if (ni.isInteger()) {
-                    acc += ni.getInteger();
-                } else {
-                    for (NestedInteger j : ni.getList()) {
-                        current.offer(j);
-                    }
-                }
+        int sum = 0, acc = 0;
+        Deque<NestedInteger> queue = new ArrayDeque<>(nestedList);
+        while (!queue.isEmpty()) {
+            for (int i = 0, size = queue.size(); i < size; i++) {
+                NestedInteger ni = queue.poll();
+                if (ni.isInteger()) acc += ni.getInteger();
+                else queue.addAll(ni.getList());
             }
             sum += acc;
         }
