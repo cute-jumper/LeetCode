@@ -1,18 +1,13 @@
 public class TeemoAttacking {
     public int findPoisonedDuration(int[] timeSeries, int duration) {
-        int total = 0;
-        int start = 0;
-        int end = 0;
-        for (int time : timeSeries) {
-            if (time >= end) {
+        int total = 0, start = 0, end = 0;
+        for (int i : timeSeries) {
+            if (i >= end) {
                 total += end - start;
-                start = time;
-                end = start + duration;
-            } else {
-                end = time + duration;
+                start = i;
             }
+            end = i + duration;
         }
-        total += end - start;
-        return total;
+        return total + end - start;
     }
 }
