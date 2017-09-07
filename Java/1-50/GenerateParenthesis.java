@@ -9,11 +9,7 @@ public class GenerateParenthesis {
             res.add(curr);
             return;
         }
-        if (right > 0) {
-            generate(res, curr + ')', left, right - 1);
-        }
-        if (left > 0) {
-            generate(res, curr + '(', left - 1, right + 1);
-        }
+        if (right > 0) generate(res, curr + ')', left, right - 1);
+        if (left > 0) generate(res, curr + '(', left - 1, right + 1);
     }
 }
