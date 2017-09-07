@@ -1,18 +1,15 @@
 public class GeneralizedAbbreviation {
     public List<String> generateAbbreviations(String word) {
         List<String> res = new ArrayList<>();
-        dfs(res, "", word, 0, false);
+        dfs(res, "", word, 0, 0);
         return res;
     }
-    private void dfs(List<String> res, String curr, String word, int start, boolean isDigit) {
+    private void dfs(List<String> res, String curr, String word, int start, int count) {
         if (start == word.length()) {
-            res.add(curr.toString());
+            res.add(curr + (count > 0 ? count + "" : ""));
             return;
         }
-        dfs(res, curr + word.charAt(start), word, start + 1, false);
-        if (isDigit) return;
-        for (int i = start + 1; i <= word.length(); i++) {
-            dfs(res, curr + (i - start), word, i, true);
-        }
+        dfs(res, curr + (count > 0 ? count + "" : "") + word.charAt(start), word, start + 1, 0);
+        dfs(res, curr, word, start + 1, count + 1);
     }
 }
