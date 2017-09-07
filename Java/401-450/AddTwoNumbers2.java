@@ -22,18 +22,12 @@ public class AddTwoNumbers2 {
         }
         int carry = 0;
         ListNode vh = new ListNode(0);
-        while (!stack1.isEmpty() || !stack2.isEmpty()) {
-            int sum = carry + (stack1.isEmpty() ? 0 : stack1.pop().val);
-            sum += stack2.isEmpty() ? 0 : stack2.pop().val;
-            carry = sum / 10;
-            ListNode node = new ListNode(sum % 10);
+        while (!stack1.isEmpty() || !stack2.isEmpty() || carry != 0) {
+            carry += (stack1.isEmpty() ? 0 : stack1.pop().val) + (stack2.isEmpty() ? 0 : stack2.pop().val);
+            ListNode node = new ListNode(carry % 10);
             node.next = vh.next;
             vh.next = node;
-        }
-        if (carry == 1) {
-            ListNode node = new ListNode(1);
-            node.next = vh.next;
-            vh.next = node;
+            carry /= 10;
         }
         return vh.next;
     }
