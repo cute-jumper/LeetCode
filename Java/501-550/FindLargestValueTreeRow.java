@@ -10,19 +10,14 @@
 public class FindLargestValueTreeRow {
     public List<Integer> largestValues(TreeNode root) {
         List<Integer> res = new ArrayList<>();
-        List<TreeNode> current = new ArrayList<>();
-        if (root != null) current.add(root);
-        while (!current.isEmpty()) {
-            List<TreeNode> next = new ArrayList<>();
-            int max = Integer.MIN_VALUE;
-            for (TreeNode node : current) {
-                max = Math.max(max, node.val);
-                if (node.left != null) next.add(node.left);
-                if (node.right != null) next.add(node.right);
-            }
-            res.add(max);
-            current = next;
-        }
+        helper(res, root, 0);
         return res;
+    }
+    void helper(List<Integer> res, TreeNode root, int depth) {
+        if (root == null) return;
+        if (depth == res.size()) res.add(root.val);
+        else res.set(depth, Math.max(res.get(depth), root.val));
+        helper(res, root.left, depth + 1);
+        helper(res, root.right, depth + 1);
     }
 }
