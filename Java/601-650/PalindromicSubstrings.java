@@ -1,17 +1,19 @@
 public class PalindromicSubstrings {
     public int countSubstrings(String s) {
-        int c = 0;
+        int count = 0;
         for (int i = 0; i < s.length(); i++) {
-            c += maxLen(s, i, true) + maxLen(s, i, false);
+            count += getCount(s, i, 0) + getCount(s, i, -1);
         }
-        return c;
+        return count;
     }
-    int maxLen(String s, int index, boolean flag) {
-        int i = flag ? index - 1 : index;
-        int j = 2 * index - i + (flag ? 0 : 1);
-        for (; i >= 0 && j< s.length(); i--, j++) {
-            if (s.charAt(i) != s.charAt(j)) break;
+    int getCount(String s, int index, int offset) {
+        int left = index + offset;
+        int right = index + 1;
+        for (; left >= 0 && right < s.length(); left--, right++) {
+            if (s.charAt(left) != s.charAt(right)) {
+                break;
+            }
         }
-        return index - i;
+        return (right - left) / 2;
     }
 }
