@@ -10,15 +10,13 @@
 public class FindLeavesOfBinaryTree {
     public List<List<Integer>> findLeaves(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
-        dfs(res, root);
+        helper(root, res);
         return res;
     }
-    public int dfs(List<List<Integer>> res, TreeNode root) {
+    int helper(TreeNode root, List<List<Integer>> res) {
         if (root == null) return -1;
-        int lh = dfs(res, root.left);
-        int rh = dfs(res, root.right);
-        int h = Math.max(lh, rh) + 1;
-        if (h >= res.size()) res.add(new ArrayList<>());
+        int h = Math.max(helper(root.left, res), helper(root.right, res)) + 1;
+        if (h == res.size()) res.add(new ArrayList<>());
         res.get(h).add(root.val);
         return h;
     }
