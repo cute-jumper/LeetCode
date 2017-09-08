@@ -1,21 +1,11 @@
 public class ShortestUnsortedContinousSubarray {
     public int findUnsortedSubarray(int[] nums) {
-        if (nums.length <= 1) return 0;
-        int low = 0;
-        for (; low < nums.length - 1; low++) {
-            if (nums[low] > nums[low + 1]) break;
-        }
-        if (low == nums.length - 1) return 0;
-        int maxVal = nums[low];
-        int high = low + 1;
-        for (int i = high; i < nums.length; i++) {
-            if (nums[i] >= maxVal) maxVal = nums[i];
-            else {
-                while (low > 0 && nums[low-1] > nums[i]) {
-                    low--;
-                }
-                high = i;
-            }
+        int max = Integer.MIN_VALUE, min = Integer.MAX_VALUE, low = -1, high = -2;
+        for (int i = 0; i < nums.length; i++) {
+            max = Math.max(max, nums[i]);
+            min = Math.min(min, nums[nums.length - i - 1]);
+            if (nums[i] < max) high = i;
+            if (nums[nums.length - i - 1] > min) low = nums.length - i - 1;
         }
         return high - low + 1;
     }
