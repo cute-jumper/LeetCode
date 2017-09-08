@@ -1,14 +1,12 @@
 public class VaildAnagram {
     public boolean isAnagram(String s, String t) {
         if (s.length() != t.length()) return false;
-        int[] count = new int[26];
+        int[] count = new int[256];
+        int z = 0;
         for (int i = 0; i < s.length(); i++) {
-            count[s.charAt(i) - 'a']++;
-            count[t.charAt(i) - 'a']--;
+            if (count[s.charAt(i)]++ == 0) z--;
+            if (count[t.charAt(i)]-- == 1) z++;
         }
-        for (int i = 0; i < 26; i++) {
-            if (count[i] != 0) return false;
-        }
-        return true;
+        return z == 0;
     }
 }
