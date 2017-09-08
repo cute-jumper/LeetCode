@@ -1,19 +1,13 @@
 public class NextGreaterElement {
     public int[] nextGreaterElement(int[] findNums, int[] nums) {
         int[] res = new int[findNums.length];
-        for (int i = 0; i < findNums.length; i++) {
-            boolean found = false;
-            for (int j = 0; j < nums.length; j++) {
-                if (found && nums[j] > findNums[i]) {
-                    res[i] = nums[j];
-                    found = false;
-                    break;
-                } else if (nums[j] == findNums[i]) {
-                    found = true;
-                }
-            }
-            if (found) res[i] = -1;
+        Deque<Integer> stack = new ArrayDeque<>();
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i : nums) {
+            while (!stack.isEmpty() && stack.peek() < i) map.put(stack.pop(), i);
+            stack.push(i);
         }
+        for (int i = 0; i < res.length; i++) res[i] = map.containsKey(findNums[i]) ? map.get(findNums[i]) : -1;
         return res;
     }
 }
