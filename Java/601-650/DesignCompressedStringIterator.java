@@ -1,6 +1,5 @@
 public class StringIterator {
     int index;
-    int curr;
     int repeat;
     String str;
     char ch;
@@ -9,12 +8,10 @@ public class StringIterator {
     }
 
     public char next() {
-        if (!hasNext()) {
-            return ' ';
-        }
-        if (curr == repeat) {
+        if (!hasNext()) return ' ';
+        if (repeat == 0) {
             ch = str.charAt(index);
-            repeat = 0;
+            int count = 0;
             for (index++; index < str.length(); index++) {
                 char c = str.charAt(index);
                 if (c >= '0' && c <= '9') {
@@ -24,16 +21,14 @@ public class StringIterator {
                     break;
                 }
             }
-            curr = 1;
-            return ch;
-        } else {
-            curr++;
-            return ch;
+            repeat = count;
         }
+        repeat--;
+        return ch;
     }
 
     public boolean hasNext() {
-        return index < str.length() || index == str.length() && curr < repeat;
+        return index < str.length() || repeat > 0;
     }
 }
 
