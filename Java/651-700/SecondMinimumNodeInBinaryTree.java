@@ -16,8 +16,7 @@ class SecondMinimumNodeInBinaryTree {
         if (root.val > val) return root.val;
         int left = helper(root.left, val);
         int right = helper(root.right, val);
-        if (left == -1) return right;
-        if (right == -1) return left;
+        if (left == -1 || right == -1) return Math.max(left, right);
         return Math.min(left, right);
     }
 }
