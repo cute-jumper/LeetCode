@@ -7,9 +7,7 @@ class RedundantConnection {
         }
         Map<Integer, Integer> map = new HashMap<>();
         int cnt = 0;
-        for (int i:set) {
-            map.put(i, cnt++);
-        }
+        for (int i : set) map.put(i, cnt++);
         UnionFind uf = new UnionFind(map.size());
         for (int[] e : edges) {
             if (!uf.union(map.get(e[0]), map.get(e[1]))) return e;
