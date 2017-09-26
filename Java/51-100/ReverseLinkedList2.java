@@ -8,24 +8,19 @@
  */
 public class ReverseLinkedList2 {
     public ListNode reverseBetween(ListNode head, int m, int n) {
-        if (m == n) return head;
         ListNode vhead = new ListNode(0);
         vhead.next = head;
-        ListNode p = vhead;
-        for (int i = 0; i < m - 1; i++) {
-            p = p.next;
-        }
-        ListNode prevEnd = p;
-        ListNode prev = null;
-        p = p.next;
+        ListNode node = vhead;
+        for (int i = 1; i < m; i++) node = node.next;
+        ListNode prev = null, curr = node.next;
         for (int i = m; i <= n; i++) {
-            ListNode next = p.next;
-            p.next = prev;
-            prev = p;
-            p = next;
+            ListNode next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
         }
-        prevEnd.next.next = p;
-        prevEnd.next = prev;
+        node.next.next = curr;
+        node.next = prev;
         return vhead.next;
     }
 }
