@@ -6,6 +6,7 @@ mod s5_longest_palindrome;
 mod s6_zigzag;
 mod s7_reverse_integer;
 mod s8_string_to_integer;
+mod s9_palindrome_number;
 
 #[derive(Debug, StructOpt)]
 #[structopt(name="Leetcode problem parser", about = "Argument parser to parse the leetcode problem")]
