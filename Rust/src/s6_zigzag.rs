@@ -13,7 +13,7 @@ impl Solution {
             for j in (i..s.len()).step_by(group_count) {
                 result.push(chars[j]);
                 let next = j + group_count - 2 * i;
-                if i > 0 && i < num_rows -1 && next < s.len() {
+                if i > 0 && i < num_rows - 1 && next < s.len() {
                     result.push(chars[next]);
                 }
             }
@@ -24,7 +24,13 @@ impl Solution {
 
 #[test]
 fn test() {
-    assert_eq!("PAHNAPLSIIGYIR".to_owned(), Solution::convert("PAYPALISHIRING".to_owned(), 3));
-    assert_eq!("PINALSIGYAHRPI".to_owned(), Solution::convert("PAYPALISHIRING".to_owned(), 4));
+    assert_eq!(
+        "PAHNAPLSIIGYIR".to_owned(),
+        Solution::convert("PAYPALISHIRING".to_owned(), 3)
+    );
+    assert_eq!(
+        "PINALSIGYAHRPI".to_owned(),
+        Solution::convert("PAYPALISHIRING".to_owned(), 4)
+    );
     assert_eq!("A".to_owned(), Solution::convert("A".to_owned(), 1));
 }

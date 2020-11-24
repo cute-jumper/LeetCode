@@ -14,14 +14,26 @@ impl Solution {
                 }
             }
         }
-        String::from(&s[start..start+longest])
+        String::from(&s[start..start + longest])
     }
 }
 
 #[test]
 fn test() {
-    assert_eq!(String::from("aba"), Solution::longest_palindrome(String::from("babad")));
-    assert_eq!(String::from("bb"), Solution::longest_palindrome(String::from("cbbd")));
-    assert_eq!(String::from("a"), Solution::longest_palindrome(String::from("a")));
-    assert_eq!(String::from("a"), Solution::longest_palindrome(String::from("ac")));
+    assert_eq!(
+        String::from("aba"),
+        Solution::longest_palindrome(String::from("babad"))
+    );
+    assert_eq!(
+        String::from("bb"),
+        Solution::longest_palindrome(String::from("cbbd"))
+    );
+    assert_eq!(
+        String::from("a"),
+        Solution::longest_palindrome(String::from("a"))
+    );
+    assert_eq!(
+        String::from("a"),
+        Solution::longest_palindrome(String::from("ac"))
+    );
 }

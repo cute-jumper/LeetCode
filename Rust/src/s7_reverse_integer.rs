@@ -21,7 +21,7 @@ impl Solution {
 fn test() {
     assert_eq!(123, Solution::reverse(321));
     assert_eq!(-321, Solution::reverse(-123));
-    assert_eq!(21, Solution::reverse(120));  
+    assert_eq!(21, Solution::reverse(120));
     assert_eq!(0, Solution::reverse(0));
     assert_eq!(0, Solution::reverse(i32::MAX));
 }

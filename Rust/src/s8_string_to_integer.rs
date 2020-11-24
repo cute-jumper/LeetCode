@@ -11,7 +11,10 @@ impl Solution {
         if is_negative || chars[0] == '+' {
             index = 1;
         }
-        let chars: Vec<&char> = chars[index..].iter().take_while(|c| c.is_numeric()).collect();
+        let chars: Vec<&char> = chars[index..]
+            .iter()
+            .take_while(|c| c.is_numeric())
+            .collect();
         if chars.is_empty() {
             return 0;
         }

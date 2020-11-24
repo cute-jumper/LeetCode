@@ -27,5 +27,4 @@ fn test() {
     assert_eq!(false, Solution::is_palindrome(10));
     assert_eq!(true, Solution::is_palindrome(11));
     assert_eq!(true, Solution::is_palindrome(1));
-
 }
