@@ -5,6 +5,7 @@ mod s17_letter_combinations;
 mod s1_two_sum;
 mod s2_add_two_numbers;
 mod s20_valid_parentheses;
+mod s22_generate_parentheses;
 mod s3_length_of_longest_substring;
 mod s5_longest_palindrome;
 mod s6_zigzag;
