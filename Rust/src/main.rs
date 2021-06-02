@@ -10,6 +10,7 @@ mod s27_remove_elements;
 mod s28_implement_strstr;
 mod s3_length_of_longest_substring;
 mod s31_next_permutation;
+mod s32_longest_valid_parentheses;
 mod s5_longest_palindrome;
 mod s6_zigzag;
 mod s7_reverse_integer;
