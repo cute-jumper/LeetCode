@@ -11,6 +11,7 @@ mod s28_implement_strstr;
 mod s3_length_of_longest_substring;
 mod s31_next_permutation;
 mod s32_longest_valid_parentheses;
+mod s35_search_insert_position;
 mod s5_longest_palindrome;
 mod s6_zigzag;
 mod s7_reverse_integer;
